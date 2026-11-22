@@ -7,31 +7,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#090817;color:white;font-family:Arial,sans-serif;transition:background 1s ease;min-height:100vh}
-
-/* WORLD BACKGROUNDS */
-body.world-0{
-background:radial-gradient(ellipse at 20% 30%,rgba(120,70,255,.45),transparent 45%),
-radial-gradient(ellipse at 80% 70%,rgba(25,220,255,.22),transparent 40%),
-linear-gradient(140deg,#090817,#211144 55%,#080b20)
-}
-body.world-1{
-background:radial-gradient(ellipse at 70% 20%,rgba(110,255,135,.22),transparent 45%),
-linear-gradient(160deg,#061b13,#0b4027 45%,#071b15)
-}
-body.world-2{
-background:radial-gradient(ellipse at 20% 20%,rgba(180,245,255,.3),transparent 45%),
-linear-gradient(155deg,#081627,#153a5c 50%,#091724)
-}
-body.world-3{
-background:radial-gradient(ellipse at 75% 25%,rgba(255,150,35,.28),transparent 40%),
-linear-gradient(160deg,#220b0b,#6a1b10 45%,#16090c)
-}
-body.world-4{
-background:radial-gradient(ellipse at 65% 25%,rgba(155,90,255,.3),transparent 45%),
-radial-gradient(ellipse at 20% 80%,rgba(30,120,255,.22),transparent 40%),
-linear-gradient(160deg,#050617,#151333 55%,#07071b)
-}
-
+body.world-0{background:radial-gradient(ellipse at 20% 30%,rgba(120,70,255,.45),transparent 45%),radial-gradient(ellipse at 80% 70%,rgba(25,220,255,.22),transparent 40%),linear-gradient(140deg,#090817,#211144 55%,#080b20)}
+body.world-1{background:radial-gradient(ellipse at 70% 20%,rgba(110,255,135,.22),transparent 45%),linear-gradient(160deg,#061b13,#0b4027 45%,#071b15)}
+body.world-2{background:radial-gradient(ellipse at 20% 20%,rgba(180,245,255,.3),transparent 45%),linear-gradient(155deg,#081627,#153a5c 50%,#091724)}
+body.world-3{background:radial-gradient(ellipse at 75% 25%,rgba(255,150,35,.28),transparent 40%),linear-gradient(160deg,#220b0b,#6a1b10 45%,#16090c)}
+body.world-4{background:radial-gradient(ellipse at 65% 25%,rgba(155,90,255,.3),transparent 45%),radial-gradient(ellipse at 20% 80%,rgba(30,120,255,.22),transparent 40%),linear-gradient(160deg,#050617,#151333 55%,#07071b)}
 header{display:flex;justify-content:space-between;align-items:center;padding:20px 35px;background:#111027;border-bottom:1px solid #302754;position:sticky;top:0;z-index:5}
 .logo{font-size:26px;font-weight:900;color:#ad8aff;letter-spacing:2px}
 .logo span{color:white}
@@ -69,14 +49,7 @@ button.action:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .pet-card{border-color:#7252b8}
 .pet-count{color:#c3a4ff;font-weight:bold}
 footer{text-align:center;padding:30px;color:#6f688c}
-@media(max-width:600px){
-header{padding:15px}
-.logo{font-size:20px}
-.hero h1{font-size:32px}
-.panel{padding:17px}
-}
-
-/* PET HATCH SCREEN */
+@media(max-width:600px){header{padding:15px}.logo{font-size:20px}.hero h1{font-size:32px}.panel{padding:17px}}
 .hatch-overlay{position:fixed;inset:0;background:radial-gradient(circle at center,#3a246c 0%,#100d24 65%,#070610 100%);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:10000;padding:20px;text-align:center;overflow:hidden}
 .hatch-overlay.show{display:flex}
 .hatch-title{font-size:clamp(24px,5vw,42px);color:#e5d5ff;text-shadow:0 0 18px #a66aff;margin-bottom:12px}
@@ -94,11 +67,13 @@ header{padding:15px}
 @keyframes petPop{0%{transform:scale(.1) rotate(-25deg);opacity:0}70%{transform:scale(1.15) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 </style>
 </head>
-
 <body>
 <header>
 <div class="logo">GRISTAL<span>.IO</span> 💎</div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+<button id="musicButton" class="action" style="width:auto;padding:11px 14px" onclick="toggleWorldMusic()">♫ Play Calm Music</button>
 <div class="money">💎 <span id="gems">0</span></div>
+</div>
 </header>
 
 <main>
@@ -184,12 +159,79 @@ header{padding:15px}
 <div class="hatch-world hatch-hidden" id="hatchWorld"></div>
 <button class="action hatch-action hatch-hidden" id="hatchCollect" onclick="closeHatch()">Collect Pet ✨</button>
 </div>
-
 </main>
 
 <footer>GRISTAL.IO · Explore the Crystal Kingdom 💎</footer>
 
 <script>
+// CALM WORLD MUSIC
+const worldMusic = [
+[[261.63,329.63,392.00],[220.00,261.63,329.63],[246.94,293.66,369.99],[196.00,261.63,329.63]],
+[[196.00,246.94,293.66],[174.61,220.00,261.63],[196.00,246.94,329.63],[164.81,220.00,261.63]],
+[[293.66,369.99,440.00],[261.63,329.63,392.00],[220.00,293.66,369.99],[246.94,329.63,415.30]],
+[[174.61,220.00,261.63],[146.83,196.00,246.94],[164.81,207.65,246.94],[146.83,174.61,220.00]],
+[[220.00,277.18,329.63],[196.00,246.94,293.66],[164.81,220.00,277.18],[185.00,233.08,293.66]]
+];
+let musicOn=false,musicContext=null,musicTimer=null,musicStep=0;
+
+function playWorldChord(){
+if(!musicOn||!musicContext)return;
+const chord=worldMusic[activeWorld][musicStep%worldMusic[activeWorld].length];
+musicStep++;
+const now=musicContext.currentTime;
+chord.forEach((frequency,index)=>{
+const oscillator=musicContext.createOscillator();
+const volume=musicContext.createGain();
+oscillator.type="sine";
+oscillator.frequency.value=frequency;
+volume.gain.setValueAtTime(0.0001,now);
+volume.gain.linearRampToValueAtTime(index===0?0.025:0.016,now+0.7);
+volume.gain.setValueAtTime(index===0?0.025:0.016,now+3.0);
+volume.gain.exponentialRampToValueAtTime(0.0001,now+3.8);
+oscillator.connect(volume);
+volume.connect(musicContext.destination);
+oscillator.start(now);
+oscillator.stop(now+3.85);
+});
+}
+
+function startWorldMusic(){
+if(!musicContext){
+const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+if(!AudioContextClass){alert("Sorry, this browser does not support background music.");return;}
+musicContext=new AudioContextClass();
+}
+musicContext.resume();
+musicOn=true;
+musicStep=0;
+clearInterval(musicTimer);
+playWorldChord();
+musicTimer=setInterval(playWorldChord,4000);
+document.getElementById("musicButton").textContent="♫ Music: ON";
+}
+
+function stopWorldMusic(){
+musicOn=false;
+clearInterval(musicTimer);
+musicTimer=null;
+if(musicContext&&musicContext.state==="running")musicContext.suspend();
+document.getElementById("musicButton").textContent="♫ Play Calm Music";
+}
+
+function toggleWorldMusic(){
+if(musicOn)stopWorldMusic();
+else startWorldMusic();
+}
+
+function changeWorldMusic(){
+if(musicOn){
+musicStep=0;
+clearInterval(musicTimer);
+playWorldChord();
+musicTimer=setInterval(playWorldChord,4000);
+}
+}
+
 const crystals = [
 {name:"Ruby",emoji:"🔴",value:2,chance:20},
 {name:"Sapphire",emoji:"🔵",value:5,chance:15},
@@ -238,13 +280,11 @@ const gristalWorlds=[
 {name:"Space World",emoji:"🌌",cost:50000,multiplier:15,description:"Earn 15x more gems"}
 ];
 
-// PET EGGS
 const eggTypes=[
 {name:"Basic Egg",emoji:"🥚",cost:10000,odds:[60,25,10,4,1],tier:"Basic"},
 {name:"Crystal Egg",emoji:"💎",cost:100000000,odds:[45,30,15,8,2],tier:"Crystal"},
 {name:"Legendary Egg",emoji:"🌟",cost:1000000000,odds:[40,25,20,10,5],tier:"Legendary"}
 ];
-
 const rarityNames=["Common","Uncommon","Rare","Epic","Legendary"];
 
 const worldPetThemes=[
@@ -252,22 +292,18 @@ const worldPetThemes=[
 [{name:"Gem Bunny",emoji:"🐰"},{name:"Crystal Mouse",emoji:"🐭"},{name:"Quartz Pup",emoji:"🐶"},{name:"Shimmer Chick",emoji:"🐥"},{name:"Pebble Turtle",emoji:"🐢"}],
 [{name:"Crystal Fox",emoji:"🦊"},{name:"Diamond Owl",emoji:"🦉"},{name:"Prism Deer",emoji:"🦌"},{name:"Gem Golem",emoji:"🗿"},{name:"Rainbow Lynx",emoji:"🐈"}],
 [{name:"Royal Unicorn",emoji:"🦄"},{name:"Diamond Dragon",emoji:"🐉"},{name:"Crystal Phoenix",emoji:"🪽"},{name:"Crown Griffin",emoji:"🦅"},{name:"Celestial Gem",emoji:"🌟"}]]},
-
 {name:"Emerald Forest",eggs:[
 [{name:"Leaf Pup",emoji:"🐶"},{name:"Moss Mouse",emoji:"🐭"},{name:"Twig Bunny",emoji:"🐰"},{name:"Fern Frog",emoji:"🐸"},{name:"Acorn Squirrel",emoji:"🐿️"}],
 [{name:"Emerald Owl",emoji:"🦉"},{name:"Forest Cat",emoji:"🐱"},{name:"Jade Deer",emoji:"🦌"},{name:"Vine Panther",emoji:"🐆"},{name:"Moss Bear",emoji:"🐻"}],
 [{name:"Ancient Treant",emoji:"🌳"},{name:"Emerald Dragon",emoji:"🐉"},{name:"Spirit Stag",emoji:"✨"},{name:"Wildwood Phoenix",emoji:"🪽"},{name:"Nature Guardian",emoji:"🌿"}]]},
-
 {name:"Ice Kingdom",eggs:[
 [{name:"Snow Bunny",emoji:"🐇"},{name:"Ice Pup",emoji:"🐶"},{name:"Frost Mouse",emoji:"🐭"},{name:"Penguin Pal",emoji:"🐧"},{name:"Snowy Seal",emoji:"🦭"}],
 [{name:"Frost Wolf",emoji:"🐺"},{name:"Ice Fox",emoji:"🦊"},{name:"Glacier Bear",emoji:"🐻‍❄️"},{name:"Crystal Penguin",emoji:"🐧"},{name:"Frozen Owl",emoji:"🦉"}],
 [{name:"Glacier Dragon",emoji:"🐲"},{name:"Aurora Unicorn",emoji:"🦄"},{name:"Frost Phoenix",emoji:"🪽"},{name:"Snow Titan",emoji:"☃️"},{name:"Arctic Spirit",emoji:"❄️"}]]},
-
 {name:"Lava World",eggs:[
 [{name:"Ash Kitten",emoji:"🐱"},{name:"Cinder Cub",emoji:"🐻"},{name:"Ember Bunny",emoji:"🐰"},{name:"Coal Chick",emoji:"🐥"},{name:"Lava Lizard",emoji:"🦎"}],
 [{name:"Flame Fox",emoji:"🦊"},{name:"Magma Wolf",emoji:"🐺"},{name:"Blaze Eagle",emoji:"🦅"},{name:"Fire Beetle",emoji:"🪲"},{name:"Scorch Panther",emoji:"🐆"}],
 [{name:"Volcano Dragon",emoji:"🐉"},{name:"Fire Phoenix",emoji:"🪽"},{name:"Inferno Golem",emoji:"🔥"},{name:"Solar Lion",emoji:"🦁"},{name:"Magma Titan",emoji:"🌋"}]]},
-
 {name:"Space World",eggs:[
 [{name:"Moon Mouse",emoji:"🐭"},{name:"Star Puppy",emoji:"🐶"},{name:"Alien Blob",emoji:"👾"},{name:"Astro Bunny",emoji:"🐰"},{name:"Comet Chick",emoji:"🐥"}],
 [{name:"Moon Cat",emoji:"🐈"},{name:"Cosmic Axolotl",emoji:"🦎"},{name:"Saturn Owl",emoji:"🦉"},{name:"Nebula Fox",emoji:"🦊"},{name:"Meteor Bear",emoji:"🐻"}],
@@ -291,12 +327,10 @@ if(!unlockedWorlds.includes(0))unlockedWorlds.push(0);
 function saveGame(){
 localStorage.setItem("gristalSave",JSON.stringify({gems,toolLevel,ownedCharacters,activeCharacter,collection,pets}));
 }
-
 function saveWorlds(){
 localStorage.setItem("gristal_active_world",activeWorld);
 localStorage.setItem("gristal_unlocked_worlds",JSON.stringify(unlockedWorlds));
 }
-
 function formatNumber(n){return Math.floor(n).toLocaleString();}
 
 function randomCrystal(){
@@ -361,6 +395,7 @@ gems-=world.cost;
 unlockedWorlds.push(index);
 }
 activeWorld=index;
+changeWorldMusic();
 saveWorlds();saveGame();update();
 document.getElementById("message").textContent="Welcome to "+world.name+"! "+world.emoji;
 }
@@ -455,7 +490,6 @@ const result=document.getElementById("hatchResult");
 const rarityEl=document.getElementById("hatchRarity");
 const worldEl=document.getElementById("hatchWorld");
 const collect=document.getElementById("hatchCollect");
-
 [petIcon,result,rarityEl,worldEl,collect].forEach(el=>el.classList.add("hatch-hidden"));
 eggIcon.classList.remove("hatch-hidden","shake");
 eggIcon.textContent=egg.emoji;
@@ -464,7 +498,6 @@ overlay.classList.add("show");
 eggIcon.classList.remove("shake");
 void eggIcon.offsetWidth;
 eggIcon.classList.add("shake");
-
 setTimeout(()=>{
 eggIcon.classList.add("hatch-hidden");
 petIcon.textContent=pet.emoji;
@@ -482,13 +515,11 @@ document.getElementById("hatchOverlay").classList.remove("show");
 }
 
 function renderEggs(){
-const grid=document.getElementById("eggsGrid");
-grid.innerHTML="";
+const grid=document.getElementById("eggsGrid");grid.innerHTML="";
 gristalWorlds.forEach((world,worldIndex)=>{
 eggTypes.forEach((egg,eggIndex)=>{
 const unlocked=unlockedWorlds.includes(worldIndex);
-const card=document.createElement("div");
-card.className="item";
+const card=document.createElement("div");card.className="item";
 const petNames=worldPetThemes[worldIndex].eggs[eggIndex].map(p=>p.name).join(", ");
 card.innerHTML=`<div class="emoji">${egg.emoji}</div><h3>${world.name} · ${egg.name}</h3><p>Chances: ${egg.odds.map((chance,i)=>rarityNames[i]+" "+chance+"%").join(" · ")}</p><p>Cost: ${formatNumber(egg.cost)} gems</p><p style="font-size:12px">Pets: ${petNames}</p><button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${worldIndex},${eggIndex})">${unlocked?"Hatch Egg":"🔒 Unlock World First"}</button>`;
 grid.appendChild(card);
@@ -497,16 +528,11 @@ grid.appendChild(card);
 }
 
 function renderPets(){
-const grid=document.getElementById("petsGrid");
-grid.innerHTML="";
+const grid=document.getElementById("petsGrid");grid.innerHTML="";
 const owned=Object.values(pets);
-if(!owned.length){
-grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';
-return;
-}
+if(!owned.length){grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';return;}
 owned.forEach(pet=>{
-const card=document.createElement("div");
-card.className="item pet-card";
+const card=document.createElement("div");card.className="item pet-card";
 card.innerHTML=`<div class="emoji">${pet.emoji}</div><h3>${pet.name}</h3><p>${pet.world} · ${pet.egg||"Egg"}</p><p>${pet.rarity||"Pet"}</p><p class="pet-count">Owned: ${pet.count}</p>`;
 grid.appendChild(card);
 });
@@ -525,7 +551,6 @@ document.getElementById("minerStatus").textContent=activeCharacter?"⛏️ Worki
 }
 
 function update(){
-// Change the scenery background to match the selected world.
 document.body.className="world-"+activeWorld;
 document.querySelector(".hero h1").textContent=gristalWorlds[activeWorld].name;
 document.querySelector(".hero p").textContent="Explore "+gristalWorlds[activeWorld].name+", mine crystals, and discover rare gems!";
@@ -556,8 +581,7 @@ return;
 }
 gems+=250;
 localStorage.setItem("gristal_daily_gift",now);
-saveGame();
-update();
+saveGame();update();
 alert("💎 You received 250 gems!");
 dailyGift.textContent="✓ Daily Gift Claimed";
 };
@@ -565,8 +589,7 @@ dailyGift.textContent="✓ Daily Gift Claimed";
 setInterval(()=>{
 if(activeCharacter){
 gems+=2*gristalWorlds[activeWorld].multiplier;
-saveGame();
-update();
+saveGame();update();
 }
 },1000);
 
