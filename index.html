@@ -5,745 +5,340 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gristal 💎</title>
-
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: #090817;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 35px;
-  background: #111027;
-  border-bottom: 1px solid #302754;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-
-.logo {
-  font-size: 26px;
-  font-weight: 900;
-  color: #ad8aff;
-  letter-spacing: 2px;
-}
-
-.logo span {
-  color: white;
-}
-
-.money {
-  background: #251d42;
-  border: 1px solid #8e6aff;
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-size: 19px;
-}
-
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 30px 20px;
-}
-
-.hero {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.hero h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  color: #aaa4c9;
-}
-
-.panel {
-  background: #141228;
-  border: 1px solid #292347;
-  border-radius: 22px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.mine-area {
-  text-align: center;
-  background:
-    radial-gradient(circle at center, #34225f, #141128 65%);
-  overflow: hidden;
-}
-
-.mine-area h2 {
-  font-size: 26px;
-}
-
-.crystal-button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 20px;
-  margin: 10px;
-}
-
-.big-crystal {
-  font-size: 125px;
-  display: inline-block;
-  filter: drop-shadow(0 0 25px #8b5bff);
-  transition: transform .12s;
-  animation: crystalFloat 2s infinite ease-in-out;
-}
-
-.big-crystal:active {
-  transform: scale(.8);
-}
-
-@keyframes crystalFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-.mine-info {
-  color: #bcb3e8;
-  margin: 12px 0;
-}
-
-#message {
-  min-height: 28px;
-  color: #d6baff;
-  font-weight: bold;
-  margin: 12px;
-}
-
-.stats {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 20px 0;
-}
-
-.stat {
-  background: #211b3b;
-  border: 1px solid #3a2f63;
-  padding: 14px 20px;
-  border-radius: 14px;
-}
-
-.stat strong {
-  color: #c3a4ff;
-}
-
-.section-title {
-  font-size: 25px;
-  margin-bottom: 20px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 15px;
-}
-
-.item {
-  background: #1a1730;
-  border: 1px solid #32284f;
-  border-radius: 16px;
-  padding: 18px;
-  text-align: center;
-}
-
-.item .emoji {
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-.item h3 {
-  margin-bottom: 7px;
-}
-
-.item p {
-  color: #aaa4c9;
-  font-size: 14px;
-  min-height: 36px;
-  margin-bottom: 10px;
-}
-
-button.action {
-  background: linear-gradient(135deg, #8856ff, #5835bd);
-  color: white;
-  border: none;
-  border-radius: 11px;
-  padding: 12px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  transition: .2s;
-}
-
-button.action:hover {
-  filter: brightness(1.2);
-  transform: translateY(-2px);
-}
-
-button.action:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.character-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.character-display {
-  background: radial-gradient(circle, #302256, #151128);
-  border-radius: 20px;
-  padding: 20px;
-  min-width: 230px;
-  text-align: center;
-}
-
-.miner {
-  font-size: 75px;
-  display: inline-block;
-  animation: minerIdle 1.2s infinite ease-in-out;
-}
-
-.miner.mining {
-  animation: mining 0.35s infinite ease-in-out;
-}
-
-.pickaxe {
-  display: inline-block;
-  font-size: 35px;
-  animation: swing 0.35s infinite alternate;
-}
-
-@keyframes minerIdle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-@keyframes mining {
-  0%, 100% { transform: rotate(-8deg) translateY(0); }
-  50% { transform: rotate(8deg) translateY(5px); }
-}
-
-@keyframes swing {
-  from { transform: rotate(-35deg); }
-  to { transform: rotate(25deg); }
-}
-
-.character-card {
-  flex: 1;
-  min-width: 210px;
-}
-
-footer {
-  text-align: center;
-  padding: 30px;
-  color: #6f688c;
-}
-
-@media(max-width:600px) {
-  header { padding: 15px; }
-  .logo { font-size: 20px; }
-  .hero h1 { font-size: 32px; }
-  .panel { padding: 17px; }
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090817;color:white;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 35px;background:#111027;border-bottom:1px solid #302754;position:sticky;top:0;z-index:5}
+.logo{font-size:26px;font-weight:900;color:#ad8aff;letter-spacing:2px}
+.logo span{color:white}
+.money{background:#251d42;border:1px solid #8e6aff;padding:12px 18px;border-radius:14px;font-size:19px}
+main{max-width:1100px;margin:auto;padding:30px 20px}
+.hero{text-align:center;margin-bottom:35px}
+.hero h1{font-size:42px;margin-bottom:10px}
+.hero p,.mine-info{color:#aaa4c9}
+.panel{background:#141228;border:1px solid #292347;border-radius:22px;padding:25px;margin-bottom:25px}
+.mine-area{text-align:center;background:radial-gradient(circle at center,#34225f,#141128 65%);overflow:hidden}
+.mine-area h2{font-size:26px}
+.crystal-button{background:transparent;border:none;cursor:pointer;padding:20px;margin:10px}
+.big-crystal{font-size:125px;display:inline-block;filter:drop-shadow(0 0 25px #8b5bff);transition:transform .12s;animation:float 2s infinite ease-in-out}
+.big-crystal:active{transform:scale(.8)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.mine-info{margin:12px 0}
+#message{min-height:28px;color:#d6baff;font-weight:bold;margin:12px}
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:20px 0}
+.stat{background:#211b3b;border:1px solid #3a2f63;padding:14px 20px;border-radius:14px}
+.stat strong{color:#c3a4ff}
+.section-title{font-size:25px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+.item{background:#1a1730;border:1px solid #32284f;border-radius:16px;padding:18px;text-align:center}
+.item .emoji{font-size:42px;margin-bottom:10px}
+.item h3{margin-bottom:7px}
+.item p{color:#aaa4c9;font-size:14px;min-height:36px;margin-bottom:10px}
+button.action{background:linear-gradient(135deg,#8856ff,#5835bd);color:white;border:none;border-radius:11px;padding:12px 16px;cursor:pointer;font-weight:bold;width:100%;transition:.2s}
+button.action:hover{filter:brightness(1.2);transform:translateY(-2px)}
+button.action:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.character-area{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:center}
+.character-display{background:radial-gradient(circle,#302256,#151128);border-radius:20px;padding:20px;min-width:230px;text-align:center}
+.miner{font-size:75px;display:inline-block;animation:float 1.2s infinite ease-in-out}
+.pickaxe{display:inline-block;font-size:35px}
+.character-card{flex:1;min-width:210px}
+footer{text-align:center;padding:30px;color:#6f688c}
+@media(max-width:600px){header{padding:15px}.logo{font-size:20px}.hero h1{font-size:32px}.panel{padding:17px}}
 </style>
 </head>
-
 <body>
-
 <header>
-  <div class="logo">GRISTAL<span>.IO</span> 💎</div>
-  <div class="money">💎 <span id="gems">0</span></div>
+<div class="logo">GRISTAL<span>.IO</span> 💎</div>
+<div class="money">💎 <span id="gems">0</span></div>
 </header>
 
 <main>
+<section class="hero">
+<h1>Crystal Kingdom</h1>
+<p>Mine crystals, discover rare gems, and become a mining legend!</p>
+</section>
 
-  <section class="hero">
-    <h1>Crystal Kingdom</h1>
-    <p>Mine crystals, discover rare gems, and become a mining legend!</p>
-  </section>
+<section class="panel">
+<h2 class="section-title">🌍 Mining Worlds</h2>
+<p class="mine-info">Unlock new worlds and earn more gems!</p>
+<div class="grid" id="gristalWorldGrid"></div>
+</section>
 
-  <!-- MINING -->
-  <section class="panel mine-area">
-    <h2>⛏️ Crystal Mine</h2>
-    <p class="mine-info">Click the crystal to mine!</p>
+<section class="panel mine-area">
+<h2>⛏️ Crystal Mine</h2>
+<p class="mine-info">Click the crystal to mine!</p>
+<button class="crystal-button" id="mineButton" onclick="mineCrystal()">
+<span class="big-crystal" id="mainCrystal">💎</span>
+</button>
+<div id="message">Ready to mine!</div>
+<div class="stats">
+<div class="stat">Power: <strong id="power">1</strong></div>
+<div class="stat">Tool: <strong id="toolName">Wooden Pickaxe</strong></div>
+<div class="stat">Auto mining: <strong id="autoRate">0</strong>/sec</div>
+<div class="stat">World bonus: <strong id="worldBonus">1x</strong></div>
+</div>
+</section>
 
-    <button class="crystal-button" id="mineButton" onclick="mineCrystal()">
-      <span class="big-crystal" id="mainCrystal">💎</span>
-    </button>
+<section class="panel">
+<h2 class="section-title">🧑‍🚀 Your Miners</h2>
+<div class="character-area">
+<div class="character-display">
+<div id="minerEmoji" class="miner">🧑</div>
+<div class="pickaxe">⛏️</div>
+<h3 id="minerName">No miner hired</h3>
+<p style="color:#aaa;margin-top:8px" id="minerStatus">Hire a miner to help you!</p>
+</div>
+<div class="grid character-card">
+<div class="item">
+<div class="emoji">👦</div>
+<h3>Boy Miner</h3>
+<p>Automatically mines 2 gems per second.</p>
+<button class="action" id="boyButton" onclick="buyCharacter('boy')">Unlock · 1,000 💎</button>
+</div>
+<div class="item">
+<div class="emoji">👧</div>
+<h3>Girl Miner</h3>
+<p>Automatically mines 2 gems per second.</p>
+<button class="action" id="girlButton" onclick="buyCharacter('girl')">Unlock · 1,000 💎</button>
+</div>
+</div>
+</div>
+</section>
 
-    <div id="message">Ready to mine!</div>
+<section class="panel">
+<h2 class="section-title">⛏️ Mining Tools</h2>
+<div class="grid" id="toolsGrid"></div>
+</section>
 
-    <div class="stats">
-      <div class="stat">Power: <strong id="power">1</strong></div>
-      <div class="stat">Tool: <strong id="toolName">Wooden Pickaxe</strong></div>
-      <div class="stat">Auto mining: <strong id="autoRate">0</strong>/sec</div>
-    </div>
-  </section>
-
-  <!-- CHARACTERS -->
-  <section class="panel">
-    <h2 class="section-title">🧑‍🚀 Your Miners</h2>
-
-    <div class="character-area">
-
-      <div class="character-display">
-        <div id="minerEmoji" class="miner">🧑</div>
-        <div class="pickaxe">⛏️</div>
-        <h3 id="minerName">No miner hired</h3>
-        <p style="color:#aaa;margin-top:8px" id="minerStatus">Hire a miner to help you!</p>
-      </div>
-
-      <div class="grid character-card">
-
-        <div class="item">
-          <div class="emoji">👦</div>
-          <h3>Boy Miner</h3>
-          <p>Automatically mines 2 gems per second.</p>
-          <button class="action" id="boyButton" onclick="buyCharacter('boy')">
-            Unlock · 1,000 💎
-          </button>
-        </div>
-
-        <div class="item">
-          <div class="emoji">👧</div>
-          <h3>Girl Miner</h3>
-          <p>Automatically mines 2 gems per second.</p>
-          <button class="action" id="girlButton" onclick="buyCharacter('girl')">
-            Unlock · 1,000 💎
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- TOOLS -->
-  <section class="panel">
-    <h2 class="section-title">⛏️ Mining Tools</h2>
-    <div class="grid" id="toolsGrid"></div>
-  </section>
-
-  <!-- CRYSTALS -->
-  <section class="panel">
-    <h2 class="section-title">💎 Crystal Collection</h2>
-    <div class="grid" id="crystalGrid"></div>
-  </section>
-
+<section class="panel">
+<h2 class="section-title">💎 Crystal Collection</h2>
+<div class="grid" id="crystalGrid"></div>
+</section>
 </main>
 
-<footer>
-  GRISTAL.IO · Explore the Crystal Kingdom 💎
-</footer>
+<footer>GRISTAL.IO · Explore the Crystal Kingdom 💎</footer>
 
 <script>
-const crystals = [
-  {name:"Ruby", emoji:"🔴", value:2, chance:35},
-  {name:"Sapphire", emoji:"🔵", value:5, chance:25},
-  {name:"Emerald", emoji:"🟢", value:10, chance:17},
-  {name:"Amethyst", emoji:"🟣", value:20, chance:10},
-  {name:"Topaz", emoji:"🟡", value:35, chance:6},
-  {name:"Diamond", emoji:"💎", value:75, chance:4},
-  {name:"Rainbow Crystal", emoji:"🌈", value:150, chance:2},
-  {name:"Dark Crystal", emoji:"🌑", value:300, chance:1}
+const crystals=[
+{name:"Ruby",emoji:"🔴",value:2,chance:35},
+{name:"Sapphire",emoji:"🔵",value:5,chance:25},
+{name:"Emerald",emoji:"🟢",value:10,chance:17},
+{name:"Amethyst",emoji:"🟣",value:20,chance:10},
+{name:"Topaz",emoji:"🟡",value:35,chance:6},
+{name:"Diamond",emoji:"💎",value:75,chance:4},
+{name:"Rainbow Crystal",emoji:"🌈",value:150,chance:2},
+{name:"Dark Crystal",emoji:"🌑",value:300,chance:1}
 ];
 
-const tools = [
-  {name:"Wooden Pickaxe", emoji:"🪵", power:1, cost:0},
-  {name:"Stone Pickaxe", emoji:"🪨", power:3, cost:100},
-  {name:"Iron Pickaxe", emoji:"⚒️", power:8, cost:500},
-  {name:"Golden Pickaxe", emoji:"🥇", power:20, cost:2000},
-  {name:"Crystal Pickaxe", emoji:"💎", power:50, cost:10000},
-  {name:"Cosmic Drill", emoji:"🌌", power:150, cost:50000}
+const tools=[
+{name:"Wooden Pickaxe",emoji:"🪵",power:1,cost:0},
+{name:"Stone Pickaxe",emoji:"🪨",power:3,cost:100},
+{name:"Iron Pickaxe",emoji:"⚒️",power:8,cost:500},
+{name:"Golden Pickaxe",emoji:"🥇",power:20,cost:2000},
+{name:"Crystal Pickaxe",emoji:"💎",power:50,cost:10000},
+{name:"Cosmic Drill",emoji:"🌌",power:150,cost:50000}
 ];
 
-let data = JSON.parse(localStorage.getItem("gristalSave") || "{}");
+const gristalWorlds=[
+{name:"Crystal Kingdom",emoji:"💎",cost:0,multiplier:1,description:"Your original mining world"},
+{name:"Emerald Forest",emoji:"🌳",cost:1000,multiplier:2,description:"Earn 2x more gems"},
+{name:"Ice Kingdom",emoji:"❄️",cost:5000,multiplier:4,description:"Earn 4x more gems"},
+{name:"Lava World",emoji:"🌋",cost:15000,multiplier:8,description:"Earn 8x more gems"},
+{name:"Space World",emoji:"🌌",cost:50000,multiplier:15,description:"Earn 15x more gems"}
+];
 
-let gems = data.gems || 0;
-let toolLevel = data.toolLevel || 0;
-let ownedCharacters = data.ownedCharacters || [];
-let activeCharacter = data.activeCharacter || "";
-let collection = data.collection || [];
+let data=JSON.parse(localStorage.getItem("gristalSave")||"{}");
+let gems=data.gems||0;
+let toolLevel=data.toolLevel||0;
+let ownedCharacters=data.ownedCharacters||[];
+let activeCharacter=data.activeCharacter||"";
+let collection=data.collection||[];
+let activeWorld=Number(localStorage.getItem("gristal_active_world")||0);
+let unlockedWorlds=JSON.parse(localStorage.getItem("gristal_unlocked_worlds")||"[0]");
 
-function saveGame() {
-  localStorage.setItem("gristalSave", JSON.stringify({
-    gems,
-    toolLevel,
-    ownedCharacters,
-    activeCharacter,
-    collection
-  }));
+if(!tools[toolLevel])toolLevel=0;
+if(!gristalWorlds[activeWorld])activeWorld=0;
+if(!unlockedWorlds.includes(0))unlockedWorlds.push(0);
+
+function saveGame(){
+localStorage.setItem("gristalSave",JSON.stringify({gems,toolLevel,ownedCharacters,activeCharacter,collection}));
 }
 
-function formatNumber(num) {
-  return Math.floor(num).toLocaleString();
+function saveWorlds(){
+localStorage.setItem("gristal_active_world",activeWorld);
+localStorage.setItem("gristal_unlocked_worlds",JSON.stringify(unlockedWorlds));
 }
 
-function randomCrystal() {
-  let roll = Math.random() * 100;
-  let total = 0;
+function formatNumber(n){return Math.floor(n).toLocaleString();}
 
-  for (const crystal of crystals) {
-    total += crystal.chance;
-    if (roll < total) return crystal;
-  }
-
-  return crystals[0];
+function randomCrystal(){
+let roll=Math.random()*100,total=0;
+for(const crystal of crystals){
+total+=crystal.chance;
+if(roll<total)return crystal;
+}
+return crystals[0];
 }
 
-function mineCrystal() {
-  const crystal = randomCrystal();
-  const amount = crystal.value * tools[toolLevel].power;
-
-  gems += amount;
-
-  if (!collection.includes(crystal.name)) {
-    collection.push(crystal.name);
-  }
-
-  document.getElementById("mainCrystal").textContent = crystal.emoji;
-  document.getElementById("message").textContent =
-    `You found ${crystal.name}! +${amount} gems`;
-
-  const miner = document.getElementById("minerEmoji");
-  miner.classList.remove("mining");
-  void miner.offsetWidth;
-  miner.classList.add("mining");
-
-  setTimeout(() => {
-    document.getElementById("mainCrystal").textContent = "💎";
-  }, 650);
-
-  saveGame();
-  update();
-}
-
-function buyTool(index) {
-  if (index !== toolLevel + 1) return;
-
-  const tool = tools[index];
-
-  if (gems >= tool.cost) {
-    gems -= tool.cost;
-    toolLevel = index;
-
-    document.getElementById("message").textContent =
-      `Unlocked ${tool.name}!`;
-
-    saveGame();
-    update();
-  }
-}
-
-function buyCharacter(type) {
-  if (ownedCharacters.includes(type)) {
-    activeCharacter = type;
-    document.getElementById("message").textContent =
-      `${type === "boy" ? "Boy" : "Girl"} miner is now working!`;
-    saveGame();
-    update();
-    return;
-  }
-
-  if (gems < 1000) {
-    document.getElementById("message").textContent =
-      "You need 1,000 gems to hire a miner!";
-    return;
-  }
-
-  gems -= 1000;
-  ownedCharacters.push(type);
-  activeCharacter = type;
-
-  document.getElementById("message").textContent =
-    `You hired the ${type} miner!`;
-
-  saveGame();
-  update();
-}
-
-function renderTools() {
-  const grid = document.getElementById("toolsGrid");
-  grid.innerHTML = "";
-
-  tools.forEach((tool, index) => {
-    const owned = index <= toolLevel;
-    const next = index === toolLevel + 1;
-    const locked = index > toolLevel + 1;
-
-    let buttonText = owned
-      ? "✓ Owned"
-      : next
-      ? `Buy · ${formatNumber(tool.cost)} 💎`
-      : "🔒 Locked";
-
-    const card = document.createElement("div");
-    card.className = "item";
-
-    card.innerHTML = `
-      <div class="emoji">${tool.emoji}</div>
-      <h3>${tool.name}</h3>
-      <p>Mining power: ${tool.power}x</p>
-      <button class="action" ${owned || locked || gems < tool.cost ? "disabled" : ""}
-        ${next ? `onclick="buyTool(${index})"` : ""}>
-        ${buttonText}
-      </button>
-    `;
-
-    grid.appendChild(card);
-  });
-}
-
-function renderCrystals() {
-  const grid = document.getElementById("crystalGrid");
-  grid.innerHTML = "";
-
-  crystals.forEach(crystal => {
-    const found = collection.includes(crystal.name);
-
-    const card = document.createElement("div");
-    card.className = "item";
-
-    card.innerHTML = `
-      <div class="emoji">${found ? crystal.emoji : "❔"}</div>
-      <h3>${found ? crystal.name : "Unknown Crystal"}</h3>
-      <p>${found ? "Value: " + crystal.value + " gems" : "Mine to discover!"}</p>
-    `;
-
-    grid.appendChild(card);
-  });
-}
-
-function renderCharacters() {
-  const boyButton = document.getElementById("boyButton");
-  const girlButton = document.getElementById("girlButton");
-
-  boyButton.disabled = !ownedCharacters.includes("boy") && gems < 1000;
-  girlButton.disabled = !ownedCharacters.includes("girl") && gems < 1000;
-
-  boyButton.textContent = ownedCharacters.includes("boy")
-    ? (activeCharacter === "boy" ? "✓ Working" : "Equip Boy")
-    : "Unlock · 1,000 💎";
-
-  girlButton.textContent = ownedCharacters.includes("girl")
-    ? (activeCharacter === "girl" ? "✓ Working" : "Equip Girl")
-    : "Unlock · 1,000 💎";
-
-  const miner = document.getElementById("minerEmoji");
-  const name = document.getElementById("minerName");
-  const status = document.getElementById("minerStatus");
-
-  if (activeCharacter === "boy") {
-    miner.textContent = "👦";
-    name.textContent = "Boy Miner";
-    status.textContent = "⛏️ Working hard!";
-  } else if (activeCharacter === "girl") {
-    miner.textContent = "👧";
-    name.textContent = "Girl Miner";
-    status.textContent = "⛏️ Working hard!";
-  } else {
-    miner.textContent = "🧑";
-    name.textContent = "No miner hired";
-    status.textContent = "Hire a miner to help you!";
-  }
-}
-
-function update() {
-  document.getElementById("gems").textContent = formatNumber(gems);
-  document.getElementById("power").textContent = tools[toolLevel].power;
-  document.getElementById("toolName").textContent = tools[toolLevel].name;
-
-  document.getElementById("autoRate").textContent =
-    activeCharacter ? "2" : "0";
-
-  renderTools();
-  renderCrystals();
-  renderCharacters();
-}
-
-// hired miner earns 2 gems every second
-setInterval(() => {
-  if (activeCharacter) {
-    gems += 2;
-    saveGame();
-    update();
-  }
-}, 1000);
-
+function mineCrystal(){
+const crystal=randomCrystal();
+const amount=crystal.value*tools[toolLevel].power*gristalWorlds[activeWorld].multiplier;
+gems+=amount;
+if(!collection.includes(crystal.name))collection.push(crystal.name);
+document.getElementById("mainCrystal").textContent=crystal.emoji;
+document.getElementById("message").textContent=`You found ${crystal.name}! +${formatNumber(amount)} gems`;
+setTimeout(()=>document.getElementById("mainCrystal").textContent="💎",650);
+saveGame();
 update();
-// Daily Crystal Gift
-const dailyGift = document.createElement("button");
-dailyGift.textContent = "🎁 Claim Daily Gift · 250 Gems";
-dailyGift.style.cssText = `
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  padding:14px;
-  border-radius:14px;
-  border:none;
-  cursor:pointer;
-  z-index:9999;
-  font-weight:bold;
-`;
+}
 
+function buyTool(index){
+if(index!==toolLevel+1)return;
+const tool=tools[index];
+if(gems>=tool.cost){
+gems-=tool.cost;
+toolLevel=index;
+document.getElementById("message").textContent=`Unlocked ${tool.name}!`;
+saveGame();
+update();
+}
+}
+
+function buyCharacter(type){
+if(ownedCharacters.includes(type)){
+activeCharacter=type;
+document.getElementById("message").textContent="Miner is now working!";
+saveGame();update();return;
+}
+if(gems<1000){
+document.getElementById("message").textContent="You need 1,000 gems to hire a miner!";
+return;
+}
+gems-=1000;
+ownedCharacters.push(type);
+activeCharacter=type;
+document.getElementById("message").textContent=`You hired the ${type} miner!`;
+saveGame();update();
+}
+
+function selectGristalWorld(index){
+const world=gristalWorlds[index];
+if(!world)return;
+if(!unlockedWorlds.includes(index)){
+if(gems<world.cost){
+document.getElementById("message").textContent="You need more gems to unlock this world!";
+return;
+}
+gems-=world.cost;
+unlockedWorlds.push(index);
+}
+activeWorld=index;
+saveWorlds();saveGame();update();
+document.getElementById("message").textContent="Welcome to "+world.name+"! "+world.emoji;
+}
+
+function renderWorlds(){
+const grid=document.getElementById("gristalWorldGrid");
+grid.innerHTML="";
+gristalWorlds.forEach((world,index)=>{
+const unlocked=unlockedWorlds.includes(index);
+const current=activeWorld===index;
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${world.emoji}</div>
+<h3>${world.name}</h3>
+<p>${world.description}</p>
+<button class="action" ${(!unlocked&&gems<world.cost)||current?"disabled":""} onclick="selectGristalWorld(${index})">
+${current?"✓ Current World":unlocked?"Travel":"Unlock · "+formatNumber(world.cost)+" 💎"}
+</button>`;
+grid.appendChild(card);
+});
+}
+
+function renderTools(){
+const grid=document.getElementById("toolsGrid");
+grid.innerHTML="";
+tools.forEach((tool,index)=>{
+const owned=index<=toolLevel;
+const next=index===toolLevel+1;
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${tool.emoji}</div>
+<h3>${tool.name}</h3>
+<p>Mining power: ${tool.power}x</p>
+<button class="action" ${owned||!next||gems<tool.cost?"disabled":""} ${next?`onclick="buyTool(${index})"`:""}>
+${owned?"✓ Owned":next?"Buy · "+formatNumber(tool.cost)+" 💎":"🔒 Locked"}
+</button>`;
+grid.appendChild(card);
+});
+}
+
+function renderCrystals(){
+const grid=document.getElementById("crystalGrid");
+grid.innerHTML="";
+crystals.forEach(crystal=>{
+const found=collection.includes(crystal.name);
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${found?crystal.emoji:"❔"}</div>
+<h3>${found?crystal.name:"Unknown Crystal"}</h3>
+<p>${found?"Value: "+crystal.value+" gems":"Mine to discover!"}</p>`;
+grid.appendChild(card);
+});
+}
+
+function renderCharacters(){
+for(const type of ["boy","girl"]){
+const button=document.getElementById(type+"Button");
+const owned=ownedCharacters.includes(type);
+button.disabled=!owned&&gems<1000;
+button.textContent=owned?(activeCharacter===type?"✓ Working":"Equip "+(type==="boy"?"Boy":"Girl")):"Unlock · 1,000 💎";
+}
+document.getElementById("minerEmoji").textContent=activeCharacter==="boy"?"👦":activeCharacter==="girl"?"👧":"🧑";
+document.getElementById("minerName").textContent=activeCharacter?activeCharacter==="boy"?"Boy Miner":"Girl Miner":"No miner hired";
+document.getElementById("minerStatus").textContent=activeCharacter?"⛏️ Working hard!":"Hire a miner to help you!";
+}
+
+function update(){
+document.getElementById("gems").textContent=formatNumber(gems);
+document.getElementById("power").textContent=tools[toolLevel].power;
+document.getElementById("toolName").textContent=tools[toolLevel].name;
+document.getElementById("autoRate").textContent=activeCharacter?2*gristalWorlds[activeWorld].multiplier:0;
+document.getElementById("worldBonus").textContent=gristalWorlds[activeWorld].multiplier+"x";
+renderWorlds();
+renderTools();
+renderCrystals();
+renderCharacters();
+}
+
+const dailyGift=document.createElement("button");
+dailyGift.textContent="🎁 Claim Daily Gift · 250 Gems";
+dailyGift.style.cssText="position:fixed;bottom:20px;right:20px;padding:14px;border-radius:14px;border:none;cursor:pointer;z-index:9999;font-weight:bold;background:#8856ff;color:white";
 document.body.appendChild(dailyGift);
 
-dailyGift.onclick = () => {
-  const lastClaim = Number(localStorage.getItem("gristal_daily_gift") || 0);
-  const now = Date.now();
-
-  if (now - lastClaim < 86400000) {
-    alert("🎁 You already claimed your daily gift!");
-    return;
-  }
-
-  gems += 250;
-  localStorage.setItem("gristal_daily_gift", now);
-  saveGame();
-  update();
-
-  alert("💎 You received 250 gems!");
-  dailyGift.textContent = "✓ Daily Gift Claimed";
-};
-</script>
-
-// GRISTAL - NEW MINING WORLDS
-const gristalWorlds = [
-  {name:"Crystal Kingdom", emoji:"💎", cost:0, multiplier:1, description:"Your original mining world"},
-  {name:"Emerald Forest", emoji:"🌳", cost:1000, multiplier:2, description:"Earn 2x more gems"},
-  {name:"Ice Kingdom", emoji:"❄️", cost:5000, multiplier:4, description:"Earn 4x more gems"},
-  {name:"Lava World", emoji:"🌋", cost:15000, multiplier:8, description:"Earn 8x more gems"},
-  {name:"Space World", emoji:"🌌", cost:50000, multiplier:15, description:"Earn 15x more gems"}
-];
-
-let activeWorld = Number(localStorage.getItem("gristal_active_world") || 0);
-let unlockedWorlds = JSON.parse(
-  localStorage.getItem("gristal_unlocked_worlds") || "[0]"
-);
-
-if (!gristalWorlds[activeWorld]) activeWorld = 0;
-
-const worldPanel = document.createElement("section");
-worldPanel.className = "panel";
-worldPanel.innerHTML = `
-  <h2 class="section-title">🌍 Mining Worlds</h2>
-  <p class="mine-info">Unlock new worlds and earn more gems!</p>
-  <div class="grid" id="gristalWorldGrid"></div>
-`;
-
-const mainArea = document.querySelector("main");
-mainArea.insertBefore(worldPanel, document.querySelector(".mine-area"));
-
-function saveWorlds() {
-  localStorage.setItem("gristal_active_world", activeWorld);
-  localStorage.setItem("gristal_unlocked_worlds",
-    JSON.stringify(unlockedWorlds));
+dailyGift.onclick=()=>{
+const lastClaim=Number(localStorage.getItem("gristal_daily_gift")||0);
+const now=Date.now();
+if(now-lastClaim<86400000){
+alert("🎁 You already claimed your daily gift!");
+return;
 }
-
-function renderWorlds() {
-  const grid = document.getElementById("gristalWorldGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  gristalWorlds.forEach((world, index) => {
-    const unlocked = unlockedWorlds.includes(index);
-    const current = activeWorld === index;
-
-    const card = document.createElement("div");
-    card.className = "item";
-
-    card.innerHTML = `
-      <div class="emoji">${world.emoji}</div>
-      <h3>${world.name}</h3>
-      <p>${world.description}</p>
-      <button class="action"
-        ${(!unlocked && gems < world.cost) || current ? "disabled" : ""}
-        onclick="selectGristalWorld(${index})">
-        ${current ? "✓ Current World" :
-          unlocked ? "Travel" : "Unlock · " + world.cost.toLocaleString() + " 💎"}
-      </button>
-    `;
-
-    grid.appendChild(card);
-  });
-}
-
-function selectGristalWorld(index) {
-  const world = gristalWorlds[index];
-  if (!world) return;
-
-  if (!unlockedWorlds.includes(index)) {
-    if (gems < world.cost) {
-      document.getElementById("message").textContent =
-        "You need more gems to unlock this world!";
-      return;
-    }
-
-    gems -= world.cost;
-    unlockedWorlds.push(index);
-  }
-
-  activeWorld = index;
-  saveWorlds();
-  saveGame();
-  update();
-
-  document.getElementById("message").textContent =
-    "Welcome to " + world.name + "! " + world.emoji;
-}
-
-// Give extra mining rewards in advanced worlds
-const originalGristalMine = mineCrystal;
-
-mineCrystal = function() {
-  const oldGems = gems;
-
-  originalGristalMine();
-
-  const baseEarned = gems - oldGems;
-  const bonus = Math.floor(
-    baseEarned * (gristalWorlds[activeWorld].multiplier - 1)
-  );
-
-  if (bonus > 0) {
-    gems += bonus;
-    saveGame();
-    update();
-
-    document.getElementById("message").textContent +=
-      " +" + bonus + " world bonus gems!";
-  }
+gems+=250;
+localStorage.setItem("gristal_daily_gift",now);
+saveGame();update();
+alert("💎 You received 250 gems!");
+dailyGift.textContent="✓ Daily Gift Claimed";
 };
 
-// Refresh world buttons whenever the game updates
-const originalGristalUpdate = update;
-
-update = function() {
-  originalGristalUpdate();
-  renderWorlds();
-};
+setInterval(()=>{
+if(activeCharacter){
+gems+=2*gristalWorlds[activeWorld].multiplier;
+saveGame();update();
+}
+},1000);
 
 update();
 </script>
