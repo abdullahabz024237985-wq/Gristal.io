@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,13 +180,13 @@ const gristalWorlds=[
 {name:"Space World",emoji:"🌌",cost:50000,multiplier:15,description:"Earn 15x more gems"}
 ];
 
+
 // PET EGGS: 3 eggs per world, with world-themed pets and hatch chances
 const eggTypes=[
-{name:"Basic Egg",emoji:"🥚",cost:250,odds:[60,30,9,1],tier:"Basic"},
-{name:"Crystal Egg",emoji:"💎",cost:1500,odds:[45,30,20,5],tier:"Crystal"},
-{name:"Legendary Egg",emoji:"🌟",cost:10000,odds:[40,30,20,10],tier:"Legendary"}
+{name:"Basic Egg",emoji:"🥚",cost:10000,odds:[60,30,9,1],tier:"Basic"},
+{name:"Crystal Egg",emoji:"💎",cost:100000000,odds:[45,30,20,5],tier:"Crystal"},
+{name:"Legendary Egg",emoji:"🌟",cost:1000000000,odds:[40,30,20,10],tier:"Legendary"}
 ];
-
 const worldPetThemes=[
 {name:"Crystal Kingdom",pets:[{name:"Gem Bunny",emoji:"🐰"},{name:"Crystal Fox",emoji:"🦊"},{name:"Diamond Dragon",emoji:"🐉"},{name:"Royal Unicorn",emoji:"🦄"}]},
 {name:"Emerald Forest",pets:[{name:"Leaf Pup",emoji:"🐶"},{name:"Forest Cat",emoji:"🐱"},{name:"Emerald Owl",emoji:"🦉"},{name:"Ancient Treant",emoji:"🌳"}]},
@@ -344,18 +345,13 @@ const egg=eggTypes[eggIndex];
 if(!unlockedWorlds.includes(worldIndex)){
 document.getElementById("message").textContent="Unlock this world first to hatch its eggs!";return;
 }
-if(gems<egg.cost){
-document.getElementById("message").textContent="You need more gems for this egg!";return;
-}
+if(gems<egg.cost){document.getElementById("message").textContent="You need more gems for this egg!";return;}
 gems-=egg.cost;
 const theme=worldPetThemes[worldIndex];
 const petList=theme.pets;
 const roll=Math.random()*100;
 let total=0,petIndex=0;
-for(let i=0;i<egg.odds.length;i++){
-total+=egg.odds[i];
-if(roll<total){petIndex=i;break;}
-}
+for(let i=0;i<egg.odds.length;i++){total+=egg.odds[i];if(roll<total){petIndex=i;break;}}
 const pet=petList[petIndex];
 const key=world.name+"|"+pet.name;
 pets[key]=pets[key]||{world:world.name,name:pet.name,emoji:pet.emoji,count:0};
@@ -365,45 +361,29 @@ saveGame();update();
 }
 
 function renderEggs(){
-const grid=document.getElementById("eggsGrid");
-grid.innerHTML="";
+const grid=document.getElementById("eggsGrid");grid.innerHTML="";
 gristalWorlds.forEach((world,worldIndex)=>{
 eggTypes.forEach((egg,eggIndex)=>{
 const unlocked=unlockedWorlds.includes(worldIndex);
-const card=document.createElement("div");
-card.className="item";
-card.innerHTML=`
-<div class="emoji">${egg.emoji}</div>
-<h3>${world.name} · ${egg.name}</h3>
-<p>Pet chances: ${egg.odds.join("% / ")}%</p>
-<p>Cost: ${formatNumber(egg.cost)} gems</p>
-<button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${worldIndex},${eggIndex})">
-${unlocked?"Hatch Egg":"🔒 Unlock World First"}
-</button>`;
+const card=document.createElement("div");card.className="item";
+card.innerHTML=`<div class="emoji">${egg.emoji}</div><h3>${world.name} · ${egg.name}</h3><p>Pet chances: ${egg.odds.join("% / ")}%</p><p>Cost: ${formatNumber(egg.cost)} gems</p><button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${worldIndex},${eggIndex})">${unlocked?"Hatch Egg":"🔒 Unlock World First"}</button>`;
 grid.appendChild(card);
 });
 });
 }
 
+
 function renderPets(){
-const grid=document.getElementById("petsGrid");
-grid.innerHTML="";
+const grid=document.getElementById("petsGrid");grid.innerHTML="";
 const owned=Object.values(pets);
-if(!owned.length){
-grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';
-return;
-}
+if(!owned.length){grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';return;}
 owned.forEach(pet=>{
-const card=document.createElement("div");
-card.className="item pet-card";
-card.innerHTML=`
-<div class="emoji">${pet.emoji}</div>
-<h3>${pet.name}</h3>
-<p>${pet.world}</p>
-<p class="pet-count">Owned: ${pet.count}</p>`;
+const card=document.createElement("div");card.className="item pet-card";
+card.innerHTML=`<div class="emoji">${pet.emoji}</div><h3>${pet.name}</h3><p>${pet.world}</p><p class="pet-count">Owned: ${pet.count}</p>`;
 grid.appendChild(card);
 });
 }
+
 
 function renderCharacters(){
 for(const type of ["boy","girl"]){
