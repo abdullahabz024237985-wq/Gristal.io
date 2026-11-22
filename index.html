@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +41,8 @@ button.action:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .miner{font-size:75px;display:inline-block;animation:float 1.2s infinite ease-in-out}
 .pickaxe{display:inline-block;font-size:35px}
 .character-card{flex:1;min-width:210px}
+.pet-card{border-color:#7252b8}
+.pet-count{color:#c3a4ff;font-weight:bold}
 footer{text-align:center;padding:30px;color:#6f688c}
 @media(max-width:600px){header{padding:15px}.logo{font-size:20px}.hero h1{font-size:32px}.panel{padding:17px}}
 </style>
@@ -114,6 +115,17 @@ footer{text-align:center;padding:30px;color:#6f688c}
 <h2 class="section-title">💎 Crystal Collection</h2>
 <div class="grid" id="crystalGrid"></div>
 </section>
+
+<section class="panel">
+<h2 class="section-title">🥚 Pet Eggs</h2>
+<p class="mine-info">Each world has 3 eggs. Hatch eggs to discover pets!</p>
+<div class="grid" id="eggsGrid"></div>
+</section>
+
+<section class="panel">
+<h2 class="section-title">🐾 Pet Collection</h2>
+<div class="grid" id="petsGrid"></div>
+</section>
 </main>
 
 <footer>GRISTAL.IO · Explore the Crystal Kingdom 💎</footer>
@@ -167,12 +179,28 @@ const gristalWorlds=[
 {name:"Space World",emoji:"🌌",cost:50000,multiplier:15,description:"Earn 15x more gems"}
 ];
 
+// PET EGGS: 3 eggs per world, with world-themed pets and hatch chances
+const eggTypes=[
+{name:"Basic Egg",emoji:"🥚",cost:250,odds:[60,30,9,1],tier:"Basic"},
+{name:"Crystal Egg",emoji:"💎",cost:1500,odds:[45,30,20,5],tier:"Crystal"},
+{name:"Legendary Egg",emoji:"🌟",cost:10000,odds:[40,30,20,10],tier:"Legendary"}
+];
+
+const worldPetThemes=[
+{name:"Crystal Kingdom",pets:[{name:"Gem Bunny",emoji:"🐰"},{name:"Crystal Fox",emoji:"🦊"},{name:"Diamond Dragon",emoji:"🐉"},{name:"Royal Unicorn",emoji:"🦄"}]},
+{name:"Emerald Forest",pets:[{name:"Leaf Pup",emoji:"🐶"},{name:"Forest Cat",emoji:"🐱"},{name:"Emerald Owl",emoji:"🦉"},{name:"Ancient Treant",emoji:"🌳"}]},
+{name:"Ice Kingdom",pets:[{name:"Snow Bunny",emoji:"🐇"},{name:"Frost Wolf",emoji:"🐺"},{name:"Ice Penguin",emoji:"🐧"},{name:"Glacier Dragon",emoji:"🐲"}]},
+{name:"Lava World",pets:[{name:"Flame Fox",emoji:"🦊"},{name:"Magma Cub",emoji:"🐻"},{name:"Fire Phoenix",emoji:"🐦"},{name:"Volcano Dragon",emoji:"🐉"}]},
+{name:"Space World",pets:[{name:"Moon Cat",emoji:"🐈"},{name:"Star Puppy",emoji:"🐕"},{name:"Cosmic Axolotl",emoji:"🦎"},{name:"Galaxy Dragon",emoji:"🐲"}]}
+];
+
 let data=JSON.parse(localStorage.getItem("gristalSave")||"{}");
 let gems=data.gems||0;
 let toolLevel=data.toolLevel||0;
 let ownedCharacters=data.ownedCharacters||[];
 let activeCharacter=data.activeCharacter||"";
 let collection=data.collection||[];
+let pets=data.pets||{};
 let activeWorld=Number(localStorage.getItem("gristal_active_world")||0);
 let unlockedWorlds=JSON.parse(localStorage.getItem("gristal_unlocked_worlds")||"[0]");
 
@@ -181,7 +209,7 @@ if(!gristalWorlds[activeWorld])activeWorld=0;
 if(!unlockedWorlds.includes(0))unlockedWorlds.push(0);
 
 function saveGame(){
-localStorage.setItem("gristalSave",JSON.stringify({gems,toolLevel,ownedCharacters,activeCharacter,collection}));
+localStorage.setItem("gristalSave",JSON.stringify({gems,toolLevel,ownedCharacters,activeCharacter,collection,pets}));
 }
 
 function saveWorlds(){
@@ -310,6 +338,73 @@ grid.appendChild(card);
 });
 }
 
+function hatchEgg(worldIndex,eggIndex){
+const world=gristalWorlds[worldIndex];
+const egg=eggTypes[eggIndex];
+if(!unlockedWorlds.includes(worldIndex)){
+document.getElementById("message").textContent="Unlock this world first to hatch its eggs!";return;
+}
+if(gems<egg.cost){
+document.getElementById("message").textContent="You need more gems for this egg!";return;
+}
+gems-=egg.cost;
+const theme=worldPetThemes[worldIndex];
+const petList=theme.pets;
+const roll=Math.random()*100;
+let total=0,petIndex=0;
+for(let i=0;i<egg.odds.length;i++){
+total+=egg.odds[i];
+if(roll<total){petIndex=i;break;}
+}
+const pet=petList[petIndex];
+const key=world.name+"|"+pet.name;
+pets[key]=pets[key]||{world:world.name,name:pet.name,emoji:pet.emoji,count:0};
+pets[key].count++;
+document.getElementById("message").textContent="🥚 You hatched "+pet.emoji+" "+pet.name+"!";
+saveGame();update();
+}
+
+function renderEggs(){
+const grid=document.getElementById("eggsGrid");
+grid.innerHTML="";
+gristalWorlds.forEach((world,worldIndex)=>{
+eggTypes.forEach((egg,eggIndex)=>{
+const unlocked=unlockedWorlds.includes(worldIndex);
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${egg.emoji}</div>
+<h3>${world.name} · ${egg.name}</h3>
+<p>Pet chances: ${egg.odds.join("% / ")}%</p>
+<p>Cost: ${formatNumber(egg.cost)} gems</p>
+<button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${worldIndex},${eggIndex})">
+${unlocked?"Hatch Egg":"🔒 Unlock World First"}
+</button>`;
+grid.appendChild(card);
+});
+});
+}
+
+function renderPets(){
+const grid=document.getElementById("petsGrid");
+grid.innerHTML="";
+const owned=Object.values(pets);
+if(!owned.length){
+grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';
+return;
+}
+owned.forEach(pet=>{
+const card=document.createElement("div");
+card.className="item pet-card";
+card.innerHTML=`
+<div class="emoji">${pet.emoji}</div>
+<h3>${pet.name}</h3>
+<p>${pet.world}</p>
+<p class="pet-count">Owned: ${pet.count}</p>`;
+grid.appendChild(card);
+});
+}
+
 function renderCharacters(){
 for(const type of ["boy","girl"]){
 const button=document.getElementById(type+"Button");
@@ -331,6 +426,8 @@ document.getElementById("worldBonus").textContent=gristalWorlds[activeWorld].mul
 renderWorlds();
 renderTools();
 renderCrystals();
+renderEggs();
+renderPets();
 renderCharacters();
 }
 
