@@ -2,94 +2,100 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gristal.io 💎</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gristal 💎</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#090817;color:white;font-family:Arial,sans-serif}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 25px;background:#111027;border-bottom:1px solid #302754;position:sticky;top:0;z-index:5}
-.logo{font-size:25px;font-weight:900;color:#ad8aff;letter-spacing:2px}
+body{background:#090817;color:white;font-family:Arial,sans-serif;transition:background 1s ease;min-height:100vh}
+
+/* WORLD BACKGROUNDS */
+body.world-0{
+background:radial-gradient(ellipse at 20% 30%,rgba(120,70,255,.45),transparent 45%),
+radial-gradient(ellipse at 80% 70%,rgba(25,220,255,.22),transparent 40%),
+linear-gradient(140deg,#090817,#211144 55%,#080b20)
+}
+body.world-1{
+background:radial-gradient(ellipse at 70% 20%,rgba(110,255,135,.22),transparent 45%),
+linear-gradient(160deg,#061b13,#0b4027 45%,#071b15)
+}
+body.world-2{
+background:radial-gradient(ellipse at 20% 20%,rgba(180,245,255,.3),transparent 45%),
+linear-gradient(155deg,#081627,#153a5c 50%,#091724)
+}
+body.world-3{
+background:radial-gradient(ellipse at 75% 25%,rgba(255,150,35,.28),transparent 40%),
+linear-gradient(160deg,#220b0b,#6a1b10 45%,#16090c)
+}
+body.world-4{
+background:radial-gradient(ellipse at 65% 25%,rgba(155,90,255,.3),transparent 45%),
+radial-gradient(ellipse at 20% 80%,rgba(30,120,255,.22),transparent 40%),
+linear-gradient(160deg,#050617,#151333 55%,#07071b)
+}
+
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 35px;background:#111027;border-bottom:1px solid #302754;position:sticky;top:0;z-index:5}
+.logo{font-size:26px;font-weight:900;color:#ad8aff;letter-spacing:2px}
 .logo span{color:white}
-.money{background:#251d42;border:1px solid #8e6aff;padding:12px 18px;border-radius:14px;font-size:18px}
-main{max-width:1100px;margin:auto;padding:25px 16px}
-.hero{text-align:center;margin-bottom:30px}
-.hero h1{font-size:40px;margin-bottom:10px}
+.money{background:#251d42;border:1px solid #8e6aff;padding:12px 18px;border-radius:14px;font-size:19px}
+main{max-width:1100px;margin:auto;padding:30px 20px}
+.hero{text-align:center;margin-bottom:35px}
+.hero h1{font-size:42px;margin-bottom:10px}
 .hero p,.mine-info{color:#aaa4c9}
-.panel{background:#141228;border:1px solid #292347;border-radius:20px;padding:22px;margin-bottom:22px}
-.mine-area{text-align:center;background:radial-gradient(circle at center,#34225f,#141128 65%)}
+.panel{background:#141228;border:1px solid #292347;border-radius:22px;padding:25px;margin-bottom:25px}
+.mine-area{text-align:center;background:radial-gradient(circle at center,#34225f,#141128 65%);overflow:hidden}
 .mine-area h2{font-size:26px}
 .crystal-button{background:transparent;border:none;cursor:pointer;padding:20px;margin:10px}
-.big-crystal{font-size:120px;display:inline-block;filter:drop-shadow(0 0 25px #8b5bff);animation:float 2s infinite ease-in-out}
+.big-crystal{font-size:125px;display:inline-block;filter:drop-shadow(0 0 25px #8b5bff);transition:transform .12s;animation:float 2s infinite ease-in-out}
 .big-crystal:active{transform:scale(.8)}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .mine-info{margin:12px 0}
 #message{min-height:28px;color:#d6baff;font-weight:bold;margin:12px}
-.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0}
-.stat{background:#211b3b;border:1px solid #3a2f63;padding:12px 17px;border-radius:12px}
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:20px 0}
+.stat{background:#211b3b;border:1px solid #3a2f63;padding:14px 20px;border-radius:14px}
 .stat strong{color:#c3a4ff}
-.section-title{font-size:24px;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
-.item{background:#1a1730;border:1px solid #32284f;border-radius:15px;padding:17px;text-align:center;overflow-wrap:anywhere}
+.section-title{font-size:25px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+.item{background:#1a1730;border:1px solid #32284f;border-radius:16px;padding:18px;text-align:center}
 .item .emoji{font-size:42px;margin-bottom:10px}
 .item h3{margin-bottom:7px}
-.item p{color:#aaa4c9;font-size:13px;margin:8px 0}
-button.action{background:linear-gradient(135deg,#8856ff,#5835bd);color:white;border:none;border-radius:10px;padding:12px;cursor:pointer;font-weight:bold;width:100%;margin-top:5px}
-button.action:hover{filter:brightness(1.15)}
-button.action:disabled{opacity:.4;cursor:not-allowed}
-.character-area{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:center}
-.character-display{background:radial-gradient(circle,#302256,#151128);border-radius:18px;padding:20px;min-width:220px;text-align:center}
-.miner{font-size:75px;display:inline-block;animation:float 1.2s infinite}
+.item p{color:#aaa4c9;font-size:14px;min-height:36px;margin-bottom:10px}
+button.action{background:linear-gradient(135deg,#8856ff,#5835bd);color:white;border:none;border-radius:11px;padding:12px 16px;cursor:pointer;font-weight:bold;width:100%;transition:.2s}
+button.action:hover{filter:brightness(1.2);transform:translateY(-2px)}
+button.action:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.character-area{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:center}
+.character-display{background:radial-gradient(circle,#302256,#151128);border-radius:20px;padding:20px;min-width:230px;text-align:center}
+.miner{font-size:75px;display:inline-block;animation:float 1.2s infinite ease-in-out}
+.pickaxe{display:inline-block;font-size:35px}
 .character-card{flex:1;min-width:210px}
 .pet-card{border-color:#7252b8}
 .pet-count{color:#c3a4ff;font-weight:bold}
-footer{text-align:center;padding:25px;color:#6f688c}
-
-/* EGG HATCH SCREEN */
-.hatch-overlay{
- display:none;position:fixed;inset:0;z-index:99999;
- background:rgba(5,4,15,.94);backdrop-filter:blur(8px);
- align-items:center;justify-content:center;padding:18px
-}
-.hatch-overlay.show{display:flex}
-.hatch-box{
- width:100%;max-width:460px;text-align:center;
- background:linear-gradient(180deg,#21183e,#100e22);
- border:2px solid #8055e9;border-radius:25px;padding:30px 20px;
- box-shadow:0 0 60px #7946ff55
-}
-.hatch-title{font-size:25px;color:#d7c4ff;margin-bottom:8px}
-.hatch-subtitle{color:#a9a0c8;margin-bottom:15px}
-.hatch-egg{
- font-size:130px;display:inline-block;margin:18px;
- filter:drop-shadow(0 0 24px #9b64ff);
- animation:eggFloat 1.5s infinite ease-in-out
-}
-.hatch-egg.shake{animation:eggShake .12s infinite}
-.hatch-egg.crack{animation:eggBurst .5s forwards}
-@keyframes eggFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-@keyframes eggShake{0%{transform:translateX(-5px) rotate(-7deg)}50%{transform:translateX(5px) rotate(7deg)}100%{transform:translateX(-5px) rotate(-7deg)}}
-@keyframes eggBurst{0%{transform:scale(1);opacity:1}100%{transform:scale(1.6);opacity:0}}
-.hatch-pet{display:none}
-.hatch-pet.reveal{display:block;animation:petReveal .8s ease-out}
-.hatch-pet-emoji{font-size:110px;display:block;filter:drop-shadow(0 0 24px #b28aff)}
-@keyframes petReveal{0%{transform:scale(.1) rotate(-30deg);opacity:0}70%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1);opacity:1}}
-.hatch-rarity{display:inline-block;padding:8px 15px;background:#3b285e;border-radius:30px;margin:10px;color:#e4d2ff;font-weight:bold}
-.hatch-pet-name{font-size:28px;margin:12px 0}
-.hatch-message{color:#c9bedf;min-height:25px;margin:10px}
-.collect-button{display:none;margin-top:15px}
-.collect-button.show{display:block}
+footer{text-align:center;padding:30px;color:#6f688c}
 @media(max-width:600px){
- header{padding:13px}
- .logo{font-size:20px}
- .hero h1{font-size:32px}
- .panel{padding:16px}
- .hatch-box{padding:22px 15px}
- .hatch-egg{font-size:105px}
+header{padding:15px}
+.logo{font-size:20px}
+.hero h1{font-size:32px}
+.panel{padding:17px}
 }
+
+/* PET HATCH SCREEN */
+.hatch-overlay{position:fixed;inset:0;background:radial-gradient(circle at center,#3a246c 0%,#100d24 65%,#070610 100%);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:10000;padding:20px;text-align:center;overflow:hidden}
+.hatch-overlay.show{display:flex}
+.hatch-title{font-size:clamp(24px,5vw,42px);color:#e5d5ff;text-shadow:0 0 18px #a66aff;margin-bottom:12px}
+.hatch-egg{font-size:clamp(110px,24vw,190px);filter:drop-shadow(0 0 30px #a875ff);animation:eggFloat 1.6s ease-in-out infinite;line-height:1.2}
+.hatch-egg.shake{animation:eggShake .65s ease-in-out 3,eggGlow 1.2s ease-in-out 3}
+.hatch-pet{font-size:clamp(100px,22vw,180px);animation:petPop .7s cubic-bezier(.2,.9,.3,1.2);filter:drop-shadow(0 0 25px #c89aff);line-height:1.2}
+.hatch-result{font-size:clamp(24px,5vw,38px);font-weight:900;margin:10px 0;color:white}
+.hatch-rarity{font-size:18px;color:#d8c1ff;margin-bottom:8px}
+.hatch-world{color:#aaa4c9;margin-bottom:20px}
+.hatch-action{max-width:250px!important;margin-top:14px}
+.hatch-hidden{display:none!important}
+@keyframes eggFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-16px) rotate(3deg)}}
+@keyframes eggShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-12px) rotate(-8deg)}40%{transform:translateX(12px) rotate(8deg)}60%{transform:translateX(-8px) rotate(-5deg)}80%{transform:translateX(8px) rotate(5deg)}}
+@keyframes eggGlow{0%,100%{filter:drop-shadow(0 0 15px #a875ff)}50%{filter:drop-shadow(0 0 50px #fff) brightness(1.5)}}
+@keyframes petPop{0%{transform:scale(.1) rotate(-25deg);opacity:0}70%{transform:scale(1.15) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 </style>
 </head>
-<body>
 
+<body>
 <header>
 <div class="logo">GRISTAL<span>.IO</span> 💎</div>
 <div class="money">💎 <span id="gems">0</span></div>
@@ -97,8 +103,8 @@ footer{text-align:center;padding:25px;color:#6f688c}
 
 <main>
 <section class="hero">
-<h1 id="worldTitle">Crystal Kingdom</h1>
-<p>Mine crystals, discover rare gems, and collect pets!</p>
+<h1>Crystal Kingdom</h1>
+<p>Mine crystals, discover rare gems, and become a mining legend!</p>
 </section>
 
 <section class="panel">
@@ -110,7 +116,7 @@ footer{text-align:center;padding:25px;color:#6f688c}
 <section class="panel mine-area">
 <h2>⛏️ Crystal Mine</h2>
 <p class="mine-info">Click the crystal to mine!</p>
-<button class="crystal-button" onclick="mineCrystal()">
+<button class="crystal-button" id="mineButton" onclick="mineCrystal()">
 <span class="big-crystal" id="mainCrystal">💎</span>
 </button>
 <div id="message">Ready to mine!</div>
@@ -127,18 +133,20 @@ footer{text-align:center;padding:25px;color:#6f688c}
 <div class="character-area">
 <div class="character-display">
 <div id="minerEmoji" class="miner">🧑</div>
-<div style="font-size:35px">⛏️</div>
+<div class="pickaxe">⛏️</div>
 <h3 id="minerName">No miner hired</h3>
-<p id="minerStatus">Hire a miner to help you!</p>
+<p style="color:#aaa;margin-top:8px" id="minerStatus">Hire a miner to help you!</p>
 </div>
 <div class="grid character-card">
 <div class="item">
-<div class="emoji">👦</div><h3>Boy Miner</h3>
+<div class="emoji">👦</div>
+<h3>Boy Miner</h3>
 <p>Automatically mines 2 gems per second.</p>
 <button class="action" id="boyButton" onclick="buyCharacter('boy')">Unlock · 1,000 💎</button>
 </div>
 <div class="item">
-<div class="emoji">👧</div><h3>Girl Miner</h3>
+<div class="emoji">👧</div>
+<h3>Girl Miner</h3>
 <p>Automatically mines 2 gems per second.</p>
 <button class="action" id="girlButton" onclick="buyCharacter('girl')">Unlock · 1,000 💎</button>
 </div>
@@ -158,7 +166,7 @@ footer{text-align:center;padding:25px;color:#6f688c}
 
 <section class="panel">
 <h2 class="section-title">🥚 Pet Eggs</h2>
-<p class="mine-info">Each world has 3 eggs with 5 exclusive pets each!</p>
+<p class="mine-info">Each world has 3 eggs. Hatch eggs to discover pets!</p>
 <div class="grid" id="eggsGrid"></div>
 </section>
 
@@ -166,32 +174,23 @@ footer{text-align:center;padding:25px;color:#6f688c}
 <h2 class="section-title">🐾 Pet Collection</h2>
 <div class="grid" id="petsGrid"></div>
 </section>
+
+<div class="hatch-overlay" id="hatchOverlay" role="dialog" aria-modal="true">
+<div class="hatch-title" id="hatchTitle">🥚 Hatching...</div>
+<div class="hatch-egg" id="hatchEgg">🥚</div>
+<div class="hatch-pet hatch-hidden" id="hatchPet">🐾</div>
+<div class="hatch-result hatch-hidden" id="hatchResult">Your new pet!</div>
+<div class="hatch-rarity hatch-hidden" id="hatchRarity"></div>
+<div class="hatch-world hatch-hidden" id="hatchWorld"></div>
+<button class="action hatch-action hatch-hidden" id="hatchCollect" onclick="closeHatch()">Collect Pet ✨</button>
+</div>
+
 </main>
 
-<footer>GRISTAL.IO · Explore, mine, hatch, collect 💎</footer>
-
-<!-- FULL SCREEN EGG HATCH -->
-<div class="hatch-overlay" id="hatchOverlay">
-<div class="hatch-box">
-<h2 class="hatch-title" id="hatchTitle">🥚 Hatching Egg!</h2>
-<p class="hatch-subtitle" id="hatchSubtitle">Your pet is inside...</p>
-
-<div id="hatchEgg" class="hatch-egg">🥚</div>
-
-<div id="hatchPet" class="hatch-pet">
-<span id="hatchPetEmoji" class="hatch-pet-emoji">🐾</span>
-<div id="hatchPetRarity" class="hatch-rarity">Common</div>
-<h2 id="hatchPetName" class="hatch-pet-name">Pet Name</h2>
-<p id="hatchPetWorld" class="hatch-subtitle"></p>
-</div>
-
-<p class="hatch-message" id="hatchMessage">Your egg is shaking...</p>
-<button class="action collect-button" id="collectButton" onclick="collectHatchedPet()">🎉 Collect Pet!</button>
-</div>
-</div>
+<footer>GRISTAL.IO · Explore the Crystal Kingdom 💎</footer>
 
 <script>
-const crystals=[
+const crystals = [
 {name:"Ruby",emoji:"🔴",value:2,chance:20},
 {name:"Sapphire",emoji:"🔵",value:5,chance:15},
 {name:"Emerald",emoji:"🟢",value:10,chance:12},
@@ -239,70 +238,40 @@ const gristalWorlds=[
 {name:"Space World",emoji:"🌌",cost:50000,multiplier:15,description:"Earn 15x more gems"}
 ];
 
+// PET EGGS
 const eggTypes=[
-{name:"Basic Egg",emoji:"🥚",cost:10000,odds:[60,25,10,4,1]},
-{name:"Crystal Egg",emoji:"💎",cost:100000000,odds:[45,30,15,8,2]},
-{name:"Legendary Egg",emoji:"🌟",cost:1000000000,odds:[40,25,20,10,5]}
+{name:"Basic Egg",emoji:"🥚",cost:10000,odds:[60,25,10,4,1],tier:"Basic"},
+{name:"Crystal Egg",emoji:"💎",cost:100000000,odds:[45,30,15,8,2],tier:"Crystal"},
+{name:"Legendary Egg",emoji:"🌟",cost:1000000000,odds:[40,25,20,10,5],tier:"Legendary"}
 ];
 
 const rarityNames=["Common","Uncommon","Rare","Epic","Legendary"];
 
 const worldPetThemes=[
 {name:"Crystal Kingdom",eggs:[
-[
-{name:"Gem Bunny",emoji:"🐰"},{name:"Crystal Mouse",emoji:"🐭"},{name:"Quartz Pup",emoji:"🐶"},{name:"Shimmer Chick",emoji:"🐥"},{name:"Pebble Turtle",emoji:"🐢"}
-],
-[
-{name:"Crystal Fox",emoji:"🦊"},{name:"Diamond Owl",emoji:"🦉"},{name:"Prism Deer",emoji:"🦌"},{name:"Gem Golem",emoji:"🗿"},{name:"Rainbow Lynx",emoji:"🐈"}
-],
-[
-{name:"Royal Unicorn",emoji:"🦄"},{name:"Diamond Dragon",emoji:"🐉"},{name:"Crystal Phoenix",emoji:"🪽"},{name:"Crown Griffin",emoji:"🦅"},{name:"Celestial Gem",emoji:"🌟"}
-]
-]},
+[{name:"Gem Bunny",emoji:"🐰"},{name:"Crystal Mouse",emoji:"🐭"},{name:"Quartz Pup",emoji:"🐶"},{name:"Shimmer Chick",emoji:"🐥"},{name:"Pebble Turtle",emoji:"🐢"}],
+[{name:"Crystal Fox",emoji:"🦊"},{name:"Diamond Owl",emoji:"🦉"},{name:"Prism Deer",emoji:"🦌"},{name:"Gem Golem",emoji:"🗿"},{name:"Rainbow Lynx",emoji:"🐈"}],
+[{name:"Royal Unicorn",emoji:"🦄"},{name:"Diamond Dragon",emoji:"🐉"},{name:"Crystal Phoenix",emoji:"🪽"},{name:"Crown Griffin",emoji:"🦅"},{name:"Celestial Gem",emoji:"🌟"}]]},
+
 {name:"Emerald Forest",eggs:[
-[
-{name:"Leaf Pup",emoji:"🐶"},{name:"Moss Mouse",emoji:"🐭"},{name:"Twig Bunny",emoji:"🐰"},{name:"Fern Frog",emoji:"🐸"},{name:"Acorn Squirrel",emoji:"🐿️"}
-],
-[
-{name:"Emerald Owl",emoji:"🦉"},{name:"Forest Cat",emoji:"🐱"},{name:"Jade Deer",emoji:"🦌"},{name:"Vine Panther",emoji:"🐆"},{name:"Moss Bear",emoji:"🐻"}
-],
-[
-{name:"Ancient Treant",emoji:"🌳"},{name:"Emerald Dragon",emoji:"🐉"},{name:"Spirit Stag",emoji:"✨"},{name:"Wildwood Phoenix",emoji:"🪽"},{name:"Nature Guardian",emoji:"🌿"}
-]
-]},
+[{name:"Leaf Pup",emoji:"🐶"},{name:"Moss Mouse",emoji:"🐭"},{name:"Twig Bunny",emoji:"🐰"},{name:"Fern Frog",emoji:"🐸"},{name:"Acorn Squirrel",emoji:"🐿️"}],
+[{name:"Emerald Owl",emoji:"🦉"},{name:"Forest Cat",emoji:"🐱"},{name:"Jade Deer",emoji:"🦌"},{name:"Vine Panther",emoji:"🐆"},{name:"Moss Bear",emoji:"🐻"}],
+[{name:"Ancient Treant",emoji:"🌳"},{name:"Emerald Dragon",emoji:"🐉"},{name:"Spirit Stag",emoji:"✨"},{name:"Wildwood Phoenix",emoji:"🪽"},{name:"Nature Guardian",emoji:"🌿"}]]},
+
 {name:"Ice Kingdom",eggs:[
-[
-{name:"Snow Bunny",emoji:"🐇"},{name:"Ice Pup",emoji:"🐶"},{name:"Frost Mouse",emoji:"🐭"},{name:"Penguin Pal",emoji:"🐧"},{name:"Snowy Seal",emoji:"🦭"}
-],
-[
-{name:"Frost Wolf",emoji:"🐺"},{name:"Ice Fox",emoji:"🦊"},{name:"Glacier Bear",emoji:"🐻‍❄️"},{name:"Crystal Penguin",emoji:"🐧"},{name:"Frozen Owl",emoji:"🦉"}
-],
-[
-{name:"Glacier Dragon",emoji:"🐲"},{name:"Aurora Unicorn",emoji:"🦄"},{name:"Frost Phoenix",emoji:"🪽"},{name:"Snow Titan",emoji:"☃️"},{name:"Arctic Spirit",emoji:"❄️"}
-]
-]},
+[{name:"Snow Bunny",emoji:"🐇"},{name:"Ice Pup",emoji:"🐶"},{name:"Frost Mouse",emoji:"🐭"},{name:"Penguin Pal",emoji:"🐧"},{name:"Snowy Seal",emoji:"🦭"}],
+[{name:"Frost Wolf",emoji:"🐺"},{name:"Ice Fox",emoji:"🦊"},{name:"Glacier Bear",emoji:"🐻‍❄️"},{name:"Crystal Penguin",emoji:"🐧"},{name:"Frozen Owl",emoji:"🦉"}],
+[{name:"Glacier Dragon",emoji:"🐲"},{name:"Aurora Unicorn",emoji:"🦄"},{name:"Frost Phoenix",emoji:"🪽"},{name:"Snow Titan",emoji:"☃️"},{name:"Arctic Spirit",emoji:"❄️"}]]},
+
 {name:"Lava World",eggs:[
-[
-{name:"Ash Kitten",emoji:"🐱"},{name:"Cinder Cub",emoji:"🐻"},{name:"Ember Bunny",emoji:"🐰"},{name:"Coal Chick",emoji:"🐥"},{name:"Lava Lizard",emoji:"🦎"}
-],
-[
-{name:"Flame Fox",emoji:"🦊"},{name:"Magma Wolf",emoji:"🐺"},{name:"Blaze Eagle",emoji:"🦅"},{name:"Fire Beetle",emoji:"🪲"},{name:"Scorch Panther",emoji:"🐆"}
-],
-[
-{name:"Volcano Dragon",emoji:"🐉"},{name:"Fire Phoenix",emoji:"🪽"},{name:"Inferno Golem",emoji:"🔥"},{name:"Solar Lion",emoji:"🦁"},{name:"Magma Titan",emoji:"🌋"}
-]
-]},
+[{name:"Ash Kitten",emoji:"🐱"},{name:"Cinder Cub",emoji:"🐻"},{name:"Ember Bunny",emoji:"🐰"},{name:"Coal Chick",emoji:"🐥"},{name:"Lava Lizard",emoji:"🦎"}],
+[{name:"Flame Fox",emoji:"🦊"},{name:"Magma Wolf",emoji:"🐺"},{name:"Blaze Eagle",emoji:"🦅"},{name:"Fire Beetle",emoji:"🪲"},{name:"Scorch Panther",emoji:"🐆"}],
+[{name:"Volcano Dragon",emoji:"🐉"},{name:"Fire Phoenix",emoji:"🪽"},{name:"Inferno Golem",emoji:"🔥"},{name:"Solar Lion",emoji:"🦁"},{name:"Magma Titan",emoji:"🌋"}]]},
+
 {name:"Space World",eggs:[
-[
-{name:"Moon Mouse",emoji:"🐭"},{name:"Star Puppy",emoji:"🐶"},{name:"Alien Blob",emoji:"👾"},{name:"Astro Bunny",emoji:"🐰"},{name:"Comet Chick",emoji:"🐥"}
-],
-[
-{name:"Moon Cat",emoji:"🐈"},{name:"Cosmic Axolotl",emoji:"🦎"},{name:"Saturn Owl",emoji:"🦉"},{name:"Nebula Fox",emoji:"🦊"},{name:"Meteor Bear",emoji:"🐻"}
-],
-[
-{name:"Galaxy Dragon",emoji:"🐲"},{name:"Cosmic Unicorn",emoji:"🦄"},{name:"Star Phoenix",emoji:"🪽"},{name:"Black Hole Beast",emoji:"🌌"},{name:"Astral Guardian",emoji:"✨"}
-]
-]}
+[{name:"Moon Mouse",emoji:"🐭"},{name:"Star Puppy",emoji:"🐶"},{name:"Alien Blob",emoji:"👾"},{name:"Astro Bunny",emoji:"🐰"},{name:"Comet Chick",emoji:"🐥"}],
+[{name:"Moon Cat",emoji:"🐈"},{name:"Cosmic Axolotl",emoji:"🦎"},{name:"Saturn Owl",emoji:"🦉"},{name:"Nebula Fox",emoji:"🦊"},{name:"Meteor Bear",emoji:"🐻"}],
+[{name:"Galaxy Dragon",emoji:"🐲"},{name:"Cosmic Unicorn",emoji:"🦄"},{name:"Star Phoenix",emoji:"🪽"},{name:"Black Hole Beast",emoji:"🌌"},{name:"Astral Guardian",emoji:"✨"}]]}
 ];
 
 let data=JSON.parse(localStorage.getItem("gristalSave")||"{}");
@@ -319,43 +288,47 @@ if(!tools[toolLevel])toolLevel=0;
 if(!gristalWorlds[activeWorld])activeWorld=0;
 if(!unlockedWorlds.includes(0))unlockedWorlds.push(0);
 
-let hatchBusy=false;
-let pendingPet=null;
-
 function saveGame(){
 localStorage.setItem("gristalSave",JSON.stringify({gems,toolLevel,ownedCharacters,activeCharacter,collection,pets}));
 }
+
 function saveWorlds(){
 localStorage.setItem("gristal_active_world",activeWorld);
 localStorage.setItem("gristal_unlocked_worlds",JSON.stringify(unlockedWorlds));
 }
+
 function formatNumber(n){return Math.floor(n).toLocaleString();}
 
 function randomCrystal(){
 let roll=Math.random()*100,total=0;
-for(const c of crystals){total+=c.chance;if(roll<total)return c;}
+for(const crystal of crystals){
+total+=crystal.chance;
+if(roll<total)return crystal;
+}
 return crystals[0];
 }
 
 function mineCrystal(){
-if(hatchBusy)return;
-const c=randomCrystal();
-const amount=c.value*tools[toolLevel].power*gristalWorlds[activeWorld].multiplier;
+const crystal=randomCrystal();
+const amount=crystal.value*tools[toolLevel].power*gristalWorlds[activeWorld].multiplier;
 gems+=amount;
-if(!collection.includes(c.name))collection.push(c.name);
-document.getElementById("mainCrystal").textContent=c.emoji;
-document.getElementById("message").textContent=`You found ${c.name}! +${formatNumber(amount)} gems`;
+if(!collection.includes(crystal.name))collection.push(crystal.name);
+document.getElementById("mainCrystal").textContent=crystal.emoji;
+document.getElementById("message").textContent=`You found ${crystal.name}! +${formatNumber(amount)} gems`;
 setTimeout(()=>document.getElementById("mainCrystal").textContent="💎",650);
-saveGame();update();
+saveGame();
+update();
 }
 
 function buyTool(index){
 if(index!==toolLevel+1)return;
 const tool=tools[index];
 if(gems>=tool.cost){
-gems-=tool.cost;toolLevel=index;
+gems-=tool.cost;
+toolLevel=index;
 document.getElementById("message").textContent=`Unlocked ${tool.name}!`;
-saveGame();update();
+saveGame();
+update();
 }
 }
 
@@ -366,10 +339,12 @@ document.getElementById("message").textContent="Miner is now working!";
 saveGame();update();return;
 }
 if(gems<1000){
-document.getElementById("message").textContent="You need 1,000 gems!";
+document.getElementById("message").textContent="You need 1,000 gems to hire a miner!";
 return;
 }
-gems-=1000;ownedCharacters.push(type);activeCharacter=type;
+gems-=1000;
+ownedCharacters.push(type);
+activeCharacter=type;
 document.getElementById("message").textContent=`You hired the ${type} miner!`;
 saveGame();update();
 }
@@ -382,174 +357,167 @@ if(gems<world.cost){
 document.getElementById("message").textContent="You need more gems to unlock this world!";
 return;
 }
-gems-=world.cost;unlockedWorlds.push(index);
+gems-=world.cost;
+unlockedWorlds.push(index);
 }
 activeWorld=index;
 saveWorlds();saveGame();update();
-document.getElementById("message").textContent="Welcome to "+world.name+"!";
+document.getElementById("message").textContent="Welcome to "+world.name+"! "+world.emoji;
 }
 
 function renderWorlds(){
-const grid=document.getElementById("gristalWorldGrid");grid.innerHTML="";
-gristalWorlds.forEach((w,i)=>{
-const unlocked=unlockedWorlds.includes(i),current=activeWorld===i;
-const card=document.createElement("div");card.className="item";
-card.innerHTML=`<div class="emoji">${w.emoji}</div><h3>${w.name}</h3><p>${w.description}</p>
-<button class="action" ${(!unlocked&&gems<w.cost)||current?"disabled":""} onclick="selectGristalWorld(${i})">${current?"✓ Current World":unlocked?"Travel":"Unlock · "+formatNumber(w.cost)+" 💎"}</button>`;
+const grid=document.getElementById("gristalWorldGrid");
+grid.innerHTML="";
+gristalWorlds.forEach((world,index)=>{
+const unlocked=unlockedWorlds.includes(index);
+const current=activeWorld===index;
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${world.emoji}</div>
+<h3>${world.name}</h3>
+<p>${world.description}</p>
+<button class="action" ${(!unlocked&&gems<world.cost)||current?"disabled":""} onclick="selectGristalWorld(${index})">
+${current?"✓ Current World":unlocked?"Travel":"Unlock · "+formatNumber(world.cost)+" 💎"}
+</button>`;
 grid.appendChild(card);
 });
 }
 
 function renderTools(){
-const grid=document.getElementById("toolsGrid");grid.innerHTML="";
-tools.forEach((t,i)=>{
-const owned=i<=toolLevel,next=i===toolLevel+1;
-const card=document.createElement("div");card.className="item";
-card.innerHTML=`<div class="emoji">${t.emoji}</div><h3>${t.name}</h3><p>Mining power: ${t.power}x</p>
-<button class="action" ${owned||!next||gems<t.cost?"disabled":""} ${next?`onclick="buyTool(${i})"`:""}>${owned?"✓ Owned":next?"Buy · "+formatNumber(t.cost)+" 💎":"🔒 Locked"}</button>`;
+const grid=document.getElementById("toolsGrid");
+grid.innerHTML="";
+tools.forEach((tool,index)=>{
+const owned=index<=toolLevel;
+const next=index===toolLevel+1;
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${tool.emoji}</div>
+<h3>${tool.name}</h3>
+<p>Mining power: ${tool.power}x</p>
+<button class="action" ${owned||!next||gems<tool.cost?"disabled":""} ${next?`onclick="buyTool(${index})"`:""}>
+${owned?"✓ Owned":next?"Buy · "+formatNumber(tool.cost)+" 💎":"🔒 Locked"}
+</button>`;
 grid.appendChild(card);
 });
 }
 
 function renderCrystals(){
-const grid=document.getElementById("crystalGrid");grid.innerHTML="";
-crystals.forEach(c=>{
-const found=collection.includes(c.name);
-const card=document.createElement("div");card.className="item";
-card.innerHTML=`<div class="emoji">${found?c.emoji:"❔"}</div><h3>${found?c.name:"Unknown Crystal"}</h3><p>${found?"Value: "+c.value+" gems":"Mine to discover!"}</p>`;
+const grid=document.getElementById("crystalGrid");
+grid.innerHTML="";
+crystals.forEach(crystal=>{
+const found=collection.includes(crystal.name);
+const card=document.createElement("div");
+card.className="item";
+card.innerHTML=`
+<div class="emoji">${found?crystal.emoji:"❔"}</div>
+<h3>${found?crystal.name:"Unknown Crystal"}</h3>
+<p>${found?"Value: "+crystal.value+" gems":"Mine to discover!"}</p>`;
 grid.appendChild(card);
 });
 }
 
-/* EGG HATCHING WITH FULL SCREEN ANIMATION */
 function hatchEgg(worldIndex,eggIndex){
-if(hatchBusy)return;
-const world=gristalWorlds[worldIndex],egg=eggTypes[eggIndex];
-
+const world=gristalWorlds[worldIndex];
+const egg=eggTypes[eggIndex];
 if(!unlockedWorlds.includes(worldIndex)){
-document.getElementById("message").textContent="Unlock this world first!";
+document.getElementById("message").textContent="Unlock this world first to hatch its eggs!";
 return;
 }
 if(gems<egg.cost){
 document.getElementById("message").textContent="You need more gems for this egg!";
 return;
 }
-
 gems-=egg.cost;
-hatchBusy=true;
-
-const list=worldPetThemes[worldIndex].eggs[eggIndex];
+const petList=worldPetThemes[worldIndex].eggs[eggIndex];
 const roll=Math.random()*100;
 let total=0,petIndex=egg.odds.length-1;
 for(let i=0;i<egg.odds.length;i++){
 total+=egg.odds[i];
 if(roll<total){petIndex=i;break;}
 }
-
-const pet=list[petIndex];
+const pet=petList[petIndex];
 const key=world.name+"|"+egg.name+"|"+pet.name;
-
-pets[key]=pets[key]||{
-world:world.name,egg:egg.name,name:pet.name,emoji:pet.emoji,
-rarity:rarityNames[petIndex],count:0
-};
+pets[key]=pets[key]||{world:world.name,egg:egg.name,name:pet.name,emoji:pet.emoji,rarity:rarityNames[petIndex],count:0};
 pets[key].count++;
-
-pendingPet={...pet,world:world.name,egg:egg.name,rarity:rarityNames[petIndex],key};
-
-saveGame();update();
-
-/* Show egg */
-const overlay=document.getElementById("hatchOverlay");
-const hatchEggEl=document.getElementById("hatchEgg");
-const hatchPetEl=document.getElementById("hatchPet");
-const collectBtn=document.getElementById("collectButton");
-
-overlay.classList.add("show");
-hatchEggEl.style.display="inline-block";
-hatchEggEl.className="hatch-egg";
-hatchEggEl.textContent=egg.emoji;
-hatchPetEl.className="hatch-pet";
-collectBtn.className="action collect-button";
-collectBtn.style.display="none";
-
-document.getElementById("hatchTitle").textContent="🥚 "+egg.name;
-document.getElementById("hatchSubtitle").textContent="Something is inside...";
-document.getElementById("hatchPetEmoji").textContent="";
-document.getElementById("hatchPetName").textContent="";
-document.getElementById("hatchPetRarity").textContent="";
-document.getElementById("hatchPetWorld").textContent="";
-document.getElementById("hatchMessage").textContent="Your egg is shaking...";
-
-setTimeout(()=>{
-hatchEggEl.classList.add("shake");
-document.getElementById("hatchMessage").textContent="It's about to hatch!";
-},700);
-
-setTimeout(()=>{
-hatchEggEl.className="hatch-egg crack";
-document.getElementById("hatchMessage").textContent="✨ POP! ✨";
-},1900);
-
-setTimeout(()=>{
-hatchEggEl.style.display="none";
-hatchPetEl.className="hatch-pet reveal";
-document.getElementById("hatchPetEmoji").textContent=pendingPet.emoji;
-document.getElementById("hatchPetName").textContent=pendingPet.name;
-document.getElementById("hatchPetRarity").textContent="⭐ "+pendingPet.rarity;
-document.getElementById("hatchPetWorld").textContent=pendingPet.world+" · "+pendingPet.egg;
-document.getElementById("hatchTitle").textContent="🎉 YOU HATCHED!";
-document.getElementById("hatchSubtitle").textContent="A new pet has joined your collection!";
-document.getElementById("hatchMessage").textContent="Your new pet is waiting!";
-collectBtn.style.display="block";
-collectBtn.classList.add("show");
-},2500);
-}
-
-function collectHatchedPet(){
-if(!pendingPet)return;
-document.getElementById("hatchOverlay").classList.remove("show");
-document.getElementById("message").textContent="🎉 Collected "+pendingPet.emoji+" "+pendingPet.name+"!";
-pendingPet=null;
-hatchBusy=false;
+saveGame();
+showHatch(pet,world,egg,rarityNames[petIndex]);
 update();
 }
 
+function showHatch(pet,world,egg,rarity){
+const overlay=document.getElementById("hatchOverlay");
+const eggIcon=document.getElementById("hatchEgg");
+const petIcon=document.getElementById("hatchPet");
+const title=document.getElementById("hatchTitle");
+const result=document.getElementById("hatchResult");
+const rarityEl=document.getElementById("hatchRarity");
+const worldEl=document.getElementById("hatchWorld");
+const collect=document.getElementById("hatchCollect");
+
+[petIcon,result,rarityEl,worldEl,collect].forEach(el=>el.classList.add("hatch-hidden"));
+eggIcon.classList.remove("hatch-hidden","shake");
+eggIcon.textContent=egg.emoji;
+title.textContent="🥚 " + egg.name + " is hatching!";
+overlay.classList.add("show");
+eggIcon.classList.remove("shake");
+void eggIcon.offsetWidth;
+eggIcon.classList.add("shake");
+
+setTimeout(()=>{
+eggIcon.classList.add("hatch-hidden");
+petIcon.textContent=pet.emoji;
+petIcon.classList.remove("hatch-hidden");
+title.textContent="✨ YOU GOT A PET! ✨";
+result.textContent=pet.name;
+rarityEl.textContent="Rarity: "+rarity;
+worldEl.textContent=world.name+" · "+egg.name;
+[result,rarityEl,worldEl,collect].forEach(el=>el.classList.remove("hatch-hidden"));
+},1900);
+}
+
+function closeHatch(){
+document.getElementById("hatchOverlay").classList.remove("show");
+}
+
 function renderEggs(){
-const grid=document.getElementById("eggsGrid");grid.innerHTML="";
-gristalWorlds.forEach((world,wi)=>{
-eggTypes.forEach((egg,ei)=>{
-const unlocked=unlockedWorlds.includes(wi);
-const card=document.createElement("div");card.className="item";
-const names=worldPetThemes[wi].eggs[ei].map(p=>p.name).join(", ");
-card.innerHTML=`<div class="emoji">${egg.emoji}</div><h3>${world.name} · ${egg.name}</h3>
-<p>Hatch chances</p><p>${egg.odds.map((n,i)=>rarityNames[i]+" "+n+"%").join(" · ")}</p>
-<p>Cost: ${formatNumber(egg.cost)} gems</p><p style="font-size:12px">Pets: ${names}</p>
-<button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${wi},${ei})">${unlocked?"Hatch Egg":"🔒 Unlock World First"}</button>`;
+const grid=document.getElementById("eggsGrid");
+grid.innerHTML="";
+gristalWorlds.forEach((world,worldIndex)=>{
+eggTypes.forEach((egg,eggIndex)=>{
+const unlocked=unlockedWorlds.includes(worldIndex);
+const card=document.createElement("div");
+card.className="item";
+const petNames=worldPetThemes[worldIndex].eggs[eggIndex].map(p=>p.name).join(", ");
+card.innerHTML=`<div class="emoji">${egg.emoji}</div><h3>${world.name} · ${egg.name}</h3><p>Chances: ${egg.odds.map((chance,i)=>rarityNames[i]+" "+chance+"%").join(" · ")}</p><p>Cost: ${formatNumber(egg.cost)} gems</p><p style="font-size:12px">Pets: ${petNames}</p><button class="action" ${!unlocked||gems<egg.cost?"disabled":""} onclick="hatchEgg(${worldIndex},${eggIndex})">${unlocked?"Hatch Egg":"🔒 Unlock World First"}</button>`;
 grid.appendChild(card);
 });
 });
 }
 
 function renderPets(){
-const grid=document.getElementById("petsGrid");grid.innerHTML="";
+const grid=document.getElementById("petsGrid");
+grid.innerHTML="";
 const owned=Object.values(pets);
 if(!owned.length){
 grid.innerHTML='<div class="item"><div class="emoji">🐾</div><h3>No pets yet</h3><p>Hatch your first egg to collect pets!</p></div>';
 return;
 }
-owned.forEach(p=>{
-const card=document.createElement("div");card.className="item pet-card";
-card.innerHTML=`<div class="emoji">${p.emoji}</div><h3>${p.name}</h3><p>${p.world} · ${p.egg||"Egg"}</p><p>${p.rarity||"Pet"}</p><p class="pet-count">Owned: ${p.count}</p>`;
+owned.forEach(pet=>{
+const card=document.createElement("div");
+card.className="item pet-card";
+card.innerHTML=`<div class="emoji">${pet.emoji}</div><h3>${pet.name}</h3><p>${pet.world} · ${pet.egg||"Egg"}</p><p>${pet.rarity||"Pet"}</p><p class="pet-count">Owned: ${pet.count}</p>`;
 grid.appendChild(card);
 });
 }
 
 function renderCharacters(){
 for(const type of ["boy","girl"]){
-const b=document.getElementById(type+"Button"),owned=ownedCharacters.includes(type);
-b.disabled=!owned&&gems<1000;
-b.textContent=owned?(activeCharacter===type?"✓ Working":"Equip "+(type==="boy"?"Boy":"Girl")):"Unlock · 1,000 💎";
+const button=document.getElementById(type+"Button");
+const owned=ownedCharacters.includes(type);
+button.disabled=!owned&&gems<1000;
+button.textContent=owned?(activeCharacter===type?"✓ Working":"Equip "+(type==="boy"?"Boy":"Girl")):"Unlock · 1,000 💎";
 }
 document.getElementById("minerEmoji").textContent=activeCharacter==="boy"?"👦":activeCharacter==="girl"?"👧":"🧑";
 document.getElementById("minerName").textContent=activeCharacter?activeCharacter==="boy"?"Boy Miner":"Girl Miner":"No miner hired";
@@ -557,34 +525,48 @@ document.getElementById("minerStatus").textContent=activeCharacter?"⛏️ Worki
 }
 
 function update(){
+// Change the scenery background to match the selected world.
+document.body.className="world-"+activeWorld;
+document.querySelector(".hero h1").textContent=gristalWorlds[activeWorld].name;
+document.querySelector(".hero p").textContent="Explore "+gristalWorlds[activeWorld].name+", mine crystals, and discover rare gems!";
 document.getElementById("gems").textContent=formatNumber(gems);
 document.getElementById("power").textContent=tools[toolLevel].power;
 document.getElementById("toolName").textContent=tools[toolLevel].name;
 document.getElementById("autoRate").textContent=activeCharacter?2*gristalWorlds[activeWorld].multiplier:0;
 document.getElementById("worldBonus").textContent=gristalWorlds[activeWorld].multiplier+"x";
-document.getElementById("worldTitle").textContent=gristalWorlds[activeWorld].name;
-renderWorlds();renderTools();renderCrystals();renderEggs();renderPets();renderCharacters();
+renderWorlds();
+renderTools();
+renderCrystals();
+renderEggs();
+renderPets();
+renderCharacters();
 }
 
-/* DAILY GIFT */
 const dailyGift=document.createElement("button");
 dailyGift.textContent="🎁 Claim Daily Gift · 250 Gems";
 dailyGift.style.cssText="position:fixed;bottom:20px;right:20px;padding:14px;border-radius:14px;border:none;cursor:pointer;z-index:9999;font-weight:bold;background:#8856ff;color:white";
 document.body.appendChild(dailyGift);
 
 dailyGift.onclick=()=>{
-const last=Number(localStorage.getItem("gristal_daily_gift")||0);
+const lastClaim=Number(localStorage.getItem("gristal_daily_gift")||0);
 const now=Date.now();
-if(now-last<86400000){alert("🎁 You already claimed your daily gift!");return;}
-gems+=250;localStorage.setItem("gristal_daily_gift",now);
-saveGame();update();alert("💎 You received 250 gems!");
+if(now-lastClaim<86400000){
+alert("🎁 You already claimed your daily gift!");
+return;
+}
+gems+=250;
+localStorage.setItem("gristal_daily_gift",now);
+saveGame();
+update();
+alert("💎 You received 250 gems!");
 dailyGift.textContent="✓ Daily Gift Claimed";
 };
 
 setInterval(()=>{
 if(activeCharacter){
 gems+=2*gristalWorlds[activeWorld].multiplier;
-saveGame();update();
+saveGame();
+update();
 }
 },1000);
 
