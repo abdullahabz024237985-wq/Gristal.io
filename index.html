@@ -592,6 +592,40 @@ setInterval(() => {
 }, 1000);
 
 update();
+// Daily Crystal Gift
+const dailyGift = document.createElement("button");
+dailyGift.textContent = "🎁 Claim Daily Gift · 250 Gems";
+dailyGift.style.cssText = `
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  z-index:9999;
+  font-weight:bold;
+`;
+
+document.body.appendChild(dailyGift);
+
+dailyGift.onclick = () => {
+  const lastClaim = Number(localStorage.getItem("gristal_daily_gift") || 0);
+  const now = Date.now();
+
+  if (now - lastClaim < 86400000) {
+    alert("🎁 You already claimed your daily gift!");
+    return;
+  }
+
+  gems += 250;
+  localStorage.setItem("gristal_daily_gift", now);
+  saveGame();
+  update();
+
+  alert("💎 You received 250 gems!");
+  dailyGift.textContent = "✓ Daily Gift Claimed";
+};
 </script>
 
 </body>
