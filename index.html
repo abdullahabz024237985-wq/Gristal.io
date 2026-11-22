@@ -628,5 +628,124 @@ dailyGift.onclick = () => {
 };
 </script>
 
+// GRISTAL - NEW MINING WORLDS
+const gristalWorlds = [
+  {name:"Crystal Kingdom", emoji:"💎", cost:0, multiplier:1, description:"Your original mining world"},
+  {name:"Emerald Forest", emoji:"🌳", cost:1000, multiplier:2, description:"Earn 2x more gems"},
+  {name:"Ice Kingdom", emoji:"❄️", cost:5000, multiplier:4, description:"Earn 4x more gems"},
+  {name:"Lava World", emoji:"🌋", cost:15000, multiplier:8, description:"Earn 8x more gems"},
+  {name:"Space World", emoji:"🌌", cost:50000, multiplier:15, description:"Earn 15x more gems"}
+];
+
+let activeWorld = Number(localStorage.getItem("gristal_active_world") || 0);
+let unlockedWorlds = JSON.parse(
+  localStorage.getItem("gristal_unlocked_worlds") || "[0]"
+);
+
+if (!gristalWorlds[activeWorld]) activeWorld = 0;
+
+const worldPanel = document.createElement("section");
+worldPanel.className = "panel";
+worldPanel.innerHTML = `
+  <h2 class="section-title">🌍 Mining Worlds</h2>
+  <p class="mine-info">Unlock new worlds and earn more gems!</p>
+  <div class="grid" id="gristalWorldGrid"></div>
+`;
+
+const mainArea = document.querySelector("main");
+mainArea.insertBefore(worldPanel, document.querySelector(".mine-area"));
+
+function saveWorlds() {
+  localStorage.setItem("gristal_active_world", activeWorld);
+  localStorage.setItem("gristal_unlocked_worlds",
+    JSON.stringify(unlockedWorlds));
+}
+
+function renderWorlds() {
+  const grid = document.getElementById("gristalWorldGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  gristalWorlds.forEach((world, index) => {
+    const unlocked = unlockedWorlds.includes(index);
+    const current = activeWorld === index;
+
+    const card = document.createElement("div");
+    card.className = "item";
+
+    card.innerHTML = `
+      <div class="emoji">${world.emoji}</div>
+      <h3>${world.name}</h3>
+      <p>${world.description}</p>
+      <button class="action"
+        ${(!unlocked && gems < world.cost) || current ? "disabled" : ""}
+        onclick="selectGristalWorld(${index})">
+        ${current ? "✓ Current World" :
+          unlocked ? "Travel" : "Unlock · " + world.cost.toLocaleString() + " 💎"}
+      </button>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function selectGristalWorld(index) {
+  const world = gristalWorlds[index];
+  if (!world) return;
+
+  if (!unlockedWorlds.includes(index)) {
+    if (gems < world.cost) {
+      document.getElementById("message").textContent =
+        "You need more gems to unlock this world!";
+      return;
+    }
+
+    gems -= world.cost;
+    unlockedWorlds.push(index);
+  }
+
+  activeWorld = index;
+  saveWorlds();
+  saveGame();
+  update();
+
+  document.getElementById("message").textContent =
+    "Welcome to " + world.name + "! " + world.emoji;
+}
+
+// Give extra mining rewards in advanced worlds
+const originalGristalMine = mineCrystal;
+
+mineCrystal = function() {
+  const oldGems = gems;
+
+  originalGristalMine();
+
+  const baseEarned = gems - oldGems;
+  const bonus = Math.floor(
+    baseEarned * (gristalWorlds[activeWorld].multiplier - 1)
+  );
+
+  if (bonus > 0) {
+    gems += bonus;
+    saveGame();
+    update();
+
+    document.getElementById("message").textContent +=
+      " +" + bonus + " world bonus gems!";
+  }
+};
+
+// Refresh world buttons whenever the game updates
+const originalGristalUpdate = update;
+
+update = function() {
+  originalGristalUpdate();
+  renderWorlds();
+};
+
+update();
+
 </body>
 </html>
