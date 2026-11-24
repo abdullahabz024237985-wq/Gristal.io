@@ -5,12 +5,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gristal.io 💎</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#090817;color:white;font-family:Arial,sans-serif;min-height:100vh}
 header{background:#17132d;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:2px solid #754cff}
 h1{color:#b99aff;font-size:28px}
-.stats{display:flex;gap:12px;flex-wrap:wrap}
+h2{color:#c8afff;margin-bottom:12px}
+h3{color:#e4d9ff;margin-bottom:8px}
+p{line-height:1.5;color:#d2c9e8}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
 .stat{background:#292044;padding:10px 14px;border-radius:12px;font-weight:bold}
 nav{display:flex;gap:7px;flex-wrap:wrap;padding:12px;background:#100d20;position:sticky;top:0;z-index:5}
 button,select{background:#6541c9;color:white;border:0;padding:10px 13px;border-radius:9px;cursor:pointer;font-weight:bold}
@@ -19,9 +23,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 select{background:#292044}
 main{max-width:1150px;margin:auto;padding:18px}
 .panel{background:#17132d;border:1px solid #35275e;border-radius:16px;padding:18px;margin-bottom:16px}
-h2{color:#c8afff;margin-bottom:12px}
-h3{margin-bottom:8px;color:#e4d9ff}
-p{line-height:1.5;color:#d2c9e8}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
 .item{background:#241d3e;padding:14px;border-radius:13px;border:1px solid #49366f}
 .item p{font-size:14px;margin:6px 0}
@@ -32,11 +33,21 @@ p{line-height:1.5;color:#d2c9e8}
 .bar span{display:block;height:100%;background:#a77aff;width:0%}
 .muted{color:#a99cbd;font-size:13px}
 .tag{display:inline-block;background:#47336d;padding:4px 8px;border-radius:20px;font-size:12px;margin:3px}
-.notice{padding:12px;background:#30234c;border-radius:10px;margin:10px 0}
 .hidden{display:none!important}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#7149d9;padding:12px 20px;border-radius:12px;display:none;z-index:20;box-shadow:0 5px 25px #000}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#7149d9;padding:12px 20px;border-radius:12px;display:none;z-index:30;box-shadow:0 5px 25px #000}
 footer{text-align:center;color:#81749e;padding:25px}
-@media(max-width:600px){header{align-items:flex-start}nav button{flex:1}main{padding:10px}.stat{font-size:13px}}
+#cave3d{width:100%;height:480px;background:#090817;border-radius:14px;overflow:hidden;position:relative}
+#cave3d canvas{display:block;width:100%;height:100%}
+.caveControls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:400px;margin:12px auto}
+.caveControls button{padding:15px}
+.caveHelp{font-size:13px;color:#b9a8d9;text-align:center;margin:8px}
+@media(max-width:600px){
+ header{align-items:flex-start}
+ nav button{flex:1}
+ main{padding:10px}
+ .stat{font-size:13px}
+ #cave3d{height:360px}
+}
 </style>
 </head>
 <body>
@@ -69,38 +80,83 @@ footer{text-align:center;color:#81749e;padding:25px}
     <h2>⛏️ Crystal Mining</h2>
     <p id="worldName">Crystal Kingdom</p>
     <div class="big" id="crystalEmoji">💎</div>
-    <h2 style="text-align:center" id="crystalName">Small Crystal</h2>
+    <h2 style="text-align:center" id="crystalName">Crystal 1</h2>
     <p style="text-align:center" id="crystalHealth">Crystal strength: 100</p>
     <div class="bar"><span id="crystalBar"></span></div>
     <button id="mineButton" onclick="mine()">⛏️ MINE CRYSTAL!</button>
-    <p style="text-align:center;margin-top:10px">Your mining power: <b id="minePower">1</b></p>
-    <p style="text-align:center" class="muted" id="mutationText">Keep mining to discover rare mutations!</p>
+    <p style="text-align:center;margin-top:10px">Mining power: <b id="minePower">1</b></p>
+    <p style="text-align:center" class="muted">Discover rare crystal mutations!</p>
   </div>
+
   <div class="grid">
-    <div class="item"><h3>🤖 Auto Miners</h3><p id="minerText">0 miners</p><button onclick="buyMiner()">Buy Miner: 500 💎</button></div>
-    <div class="item"><h3>🎁 Daily Gift</h3><p>Come back every day for free gems.</p><button onclick="dailyGift()">Claim Daily Gift</button></div>
-    <div class="item"><h3>⚡ Boosts</h3><p id="boostText">No active boost</p><button onclick="buyBoost()">Buy 2x Boost: 300 💎</button></div>
-    <div class="item"><h3>🌟 Global Event</h3><p id="eventText">No event yet.</p><p class="muted" id="eventTimer"></p></div>
+    <div class="item">
+      <h3>🤖 Auto Miners</h3>
+      <p id="minerText">0 miners</p>
+      <button onclick="buyMiner()">Buy Miner</button>
+    </div>
+    <div class="item">
+      <h3>🎁 Daily Gift</h3>
+      <p>Claim 250 free gems once per day.</p>
+      <button onclick="dailyGift()">Claim Gift</button>
+    </div>
+    <div class="item">
+      <h3>⚡ Boost</h3>
+      <p id="boostText">No active boost</p>
+      <button onclick="buyBoost()">Buy 2x Boost: 300 💎</button>
+    </div>
+    <div class="item">
+      <h3>🌟 Global Event</h3>
+      <p id="eventText">Waiting for an event.</p>
+      <p id="eventTimer" class="muted"></p>
+    </div>
   </div>
+
   <div class="panel">
     <h2>👑 World Boss</h2>
-    <p id="bossText">A giant crystal is waiting to be defeated!</p>
+    <p id="bossText">A giant crystal is waiting!</p>
     <div class="bar"><span id="bossBar"></span></div>
     <button onclick="attackBoss()">⚔️ Attack Boss</button>
   </div>
+
   <div class="panel">
     <h2>🕳️ Secret Crystal Cave</h2>
-    <p>Find hidden caves and discover special crystal rewards.</p>
-    <button onclick="exploreCave()">Explore Cave</button>
+    <p>Become a real cave miner. Explore the 3D cave and search for hidden crystals and gems!</p>
+    <button onclick="showTab('cave')">⛏️ ENTER THE 3D CAVE</button>
+  </div>
+</section>
+
+<section id="cave" class="tab hidden">
+  <div class="panel">
+    <h2>🕳️ GRISTAL 3D CRYSTAL CAVE</h2>
+    <p>Explore the cave, find glowing crystals and mine them for rewards.</p>
+    <div id="cave3d"></div>
+    <p id="caveMessage" style="text-align:center;margin:12px">Welcome to the cave, miner!</p>
+    <p class="caveHelp">Computer: WASD or arrow keys to move. Q and E to turn. Get close to a crystal and press Mine.</p>
+    <p class="caveHelp">Mobile: Use the movement buttons below.</p>
+    <div class="caveControls">
+      <span></span>
+      <button onclick="moveCave('forward')">⬆️</button>
+      <span></span>
+      <button onclick="moveCave('left')">⬅️</button>
+      <button onclick="moveCave('back')">⬇️</button>
+      <button onclick="moveCave('right')">➡️</button>
+      <button onclick="turnCave(-1)">↶ Turn</button>
+      <button onclick="mineCaveCrystal()">⛏️ MINE</button>
+      <button onclick="turnCave(1)">Turn ↷</button>
+    </div>
+    <button style="width:100%" onclick="leaveCave()">🚪 LEAVE CAVE</button>
   </div>
 </section>
 
 <section id="shop" class="tab hidden">
-  <div class="panel"><h2>🛠️ Pickaxe Shop</h2><p>100 pickaxes, from beginner tools to GOD-tier tools.</p><p id="pickaxeInfo"></p></div>
+  <div class="panel">
+    <h2>🛠️ Pickaxe Shop</h2>
+    <p>100 pickaxes, from beginner tools to GOD-tier tools.</p>
+    <p id="pickaxeInfo"></p>
+  </div>
   <div id="pickaxeList" class="grid"></div>
   <div class="panel">
     <h2>✨ Pickaxe Enchantments</h2>
-    <p>Enchant your current pickaxe for extra mining power.</p>
     <p id="enchantText">Enchant level: 0</p>
     <button onclick="enchantPickaxe()">Enchant Pickaxe</button>
   </div>
@@ -112,24 +168,25 @@ footer{text-align:center;color:#81749e;padding:25px}
     <p>Every world has 3 eggs. Each egg has 5 possible pets.</p>
     <select id="eggSelect"></select>
     <button onclick="hatchEgg()">Hatch Egg</button>
-    <p id="eggInfo" class="muted"></p>
   </div>
   <div class="panel">
     <h2>🐾 Your Pets</h2>
     <p id="petCount"></p>
-    <p class="muted">Equip up to 3 pets. Duplicate pets can be evolved.</p>
+    <p class="muted">Equip up to 3 pets. Combine 3 identical pets to evolve one.</p>
     <div id="petList" class="grid"></div>
   </div>
   <div class="panel">
     <h2>🧬 Pet Evolution</h2>
-    <p>Combine 3 identical pets into one stronger evolved pet.</p>
     <select id="evolveSelect"></select>
     <button onclick="evolvePet()">Evolve Pet</button>
   </div>
 </section>
 
 <section id="worlds" class="tab hidden">
-  <div class="panel"><h2>🌍 Explore 21 Worlds</h2><p>Each world has 100 different crystals. Later worlds have much stronger crystals and higher unlock costs.</p></div>
+  <div class="panel">
+    <h2>🌍 Explore 21 Worlds</h2>
+    <p>Each world has 100 crystals. Later worlds have stronger crystals and bigger rewards.</p>
+  </div>
   <div id="worldList" class="grid"></div>
 </section>
 
@@ -151,36 +208,52 @@ footer{text-align:center;color:#81749e;padding:25px}
 <section id="market" class="tab hidden">
   <div class="panel">
     <h2>🏪 Gristal Merchant</h2>
-    <p>Trade your gems for useful supplies. This is an in-game merchant, not real-player trading.</p>
+    <p>Trade with the in-game merchant for supplies.</p>
     <div class="grid">
-      <div class="item"><h3>🧪 Mining Potion</h3><p>Extra mining power for a short time.</p><button onclick="buyPotion()">Buy for 200 💎</button></div>
-      <div class="item"><h3>🥚 Mystery Egg</h3><p>A surprise pet from your current world.</p><button onclick="buyMysteryEgg()">Buy for 500 💎</button></div>
-      <div class="item"><h3>💰 Sell Gems</h3><p>Trade spare pets for gems.</p><button onclick="sellPet()">Sell one pet</button></div>
+      <div class="item">
+        <h3>🧪 Mining Potion</h3>
+        <p>Extra power for 60 seconds.</p>
+        <button onclick="buyPotion()">Buy for 200 💎</button>
+      </div>
+      <div class="item">
+        <h3>🥚 Mystery Egg</h3>
+        <p>A surprise pet.</p>
+        <button onclick="buyMysteryEgg()">Buy for 500 💎</button>
+      </div>
+      <div class="item">
+        <h3>💰 Sell Pet</h3>
+        <p>Sell one unequipped pet for gems.</p>
+        <button onclick="sellPet()">Sell one pet</button>
+      </div>
     </div>
   </div>
   <div class="panel hidden" id="secretShop">
     <h2>🌌 SECRET GOD'S DOMAIN SHOP</h2>
-    <p>Only the strongest miners can enter this shop.</p>
+    <p>Only the strongest miners can enter.</p>
     <button onclick="buySecretPower()">Buy Divine Power: 1,000,000 💎</button>
   </div>
 </section>
 
 <section id="achievements" class="tab hidden">
-  <div class="panel"><h2>🏆 Achievements and Badges</h2><p>Complete challenges to earn permanent rewards.</p><div id="achievementList"></div></div>
+  <div class="panel">
+    <h2>🏆 Achievements and Badges</h2>
+    <div id="achievementList"></div>
+  </div>
 </section>
 
 <section id="rebirth" class="tab hidden">
   <div class="panel">
     <h2>♻️ Rebirth System</h2>
     <div class="big">🌟</div>
-    <p>Rebirth resets your gems, pickaxe, unlocked worlds and mining progress.</p>
-    <p>You keep your rebirth count, permanent rebirth power, achievements and pets.</p>
+    <p>Rebirth resets your gems, worlds and pickaxe progress.</p>
+    <p>You keep your pets, achievements and permanent rebirth bonuses.</p>
     <p id="rebirthInfo"></p>
     <button onclick="rebirth()">REBIRTH NOW</button>
   </div>
 </section>
 
 </main>
+
 <footer>Gristal.io 💎 | Mine. Upgrade. Evolve. Become legendary.</footer>
 <div id="toast"></div>
 
@@ -193,8 +266,20 @@ const WORLD_NAMES=[
 "Celestial World","Time World","Void Dimension","Multiverse World",
 "GOD'S DOMAIN"
 ];
-const WORLD_EMOJIS=["💎","🌳","❄️","🌋","🔮","🚀","🌙","🌌","⚡","🌑","🐉","🌈","🌀","🌈","🌠","♾️","✨","⏳","🕳️","🌐","👑"];
-const PICK_NAMES=["Wooden Pickaxe","Stone Pickaxe","Copper Pickaxe","Iron Pickaxe","Gold Pickaxe","Diamond Pickaxe","Emerald Pickaxe","Ruby Pickaxe","Sapphire Pickaxe","Crystal Pickaxe","Flame Pickaxe","Frost Pickaxe","Thunder Pickaxe","Shadow Pickaxe","Dragon Pickaxe","Galaxy Pickaxe","Rainbow Pickaxe","Quantum Pickaxe","Infinity Pickaxe","Divine Pickaxe"];
+
+const WORLD_EMOJIS=[
+"💎","🌳","❄️","🌋","🔮","🚀","🌙","🌌","⚡","🌑",
+"🐉","🌈","🌀","🌈","🌠","♾️","✨","⏳","🕳️","🌐","👑"
+];
+
+const PICK_NAMES=[
+"Wooden Pickaxe","Stone Pickaxe","Copper Pickaxe","Iron Pickaxe",
+"Gold Pickaxe","Diamond Pickaxe","Emerald Pickaxe","Ruby Pickaxe",
+"Sapphire Pickaxe","Crystal Pickaxe","Flame Pickaxe","Frost Pickaxe",
+"Thunder Pickaxe","Shadow Pickaxe","Dragon Pickaxe","Galaxy Pickaxe",
+"Rainbow Pickaxe","Quantum Pickaxe","Infinity Pickaxe","Divine Pickaxe"
+];
+
 const PET_NAMES=["Crystal Fox","Emerald Cat","Frost Bunny","Magma Dragon","Space Owl"];
 const PET_EMOJIS=["🦊","🐱","🐰","🐉","🦉"];
 const RARITIES=["Common","Uncommon","Rare","Epic","Legendary","Mythic","Divine"];
@@ -212,361 +297,916 @@ lastEvent:0,eventName:"",eventUntil:0,
 secretPower:0,playSeconds:0
 };
 
+let crystalHealth=100;
+let caveScene=null;
+let caveCamera=null;
+let caveRenderer=null;
+let caveCrystals=[];
+let caveStarted=false;
+let caveRunning=false;
+let caveYaw=0;
+let caveKeys={};
+let caveAnimation=null;
+
 function load(){
 try{
 const saved=JSON.parse(localStorage.getItem(SAVE_KEY));
-if(saved) game={...game,...saved};
+if(saved)game={...game,...saved};
 }catch(e){}
 game.world=Math.min(game.world,20);
 game.unlocked=Math.max(game.unlocked,game.world);
 }
-function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(game))}
-function fmt(n){return Math.floor(n).toLocaleString("en-US")}
-function cost(n){return Math.floor(n)}
+
+function save(){
+localStorage.setItem(SAVE_KEY,JSON.stringify(game));
+}
+
+function fmt(n){
+return Math.floor(n).toLocaleString("en-US");
+}
+
 function notify(msg){
 const t=document.getElementById("toast");
-t.textContent=msg;t.style.display="block";
+t.textContent=msg;
+t.style.display="block";
 clearTimeout(window.toastTimer);
-window.toastTimer=setTimeout(()=>t.style.display="none",2200);
+window.toastTimer=setTimeout(()=>t.style.display="none",2300);
 }
+
 function showTab(id){
 document.querySelectorAll(".tab").forEach(x=>x.classList.add("hidden"));
 document.getElementById(id).classList.remove("hidden");
+
 if(id==="shop")renderPickaxes();
-if(id==="pets")renderPets();
+if(id==="pets"){renderPets();renderEggs();}
 if(id==="worlds")renderWorlds();
 if(id==="quests")renderQuests();
 if(id==="achievements")renderAchievements();
-if(id==="pets")renderEggs();
+if(id==="cave")enterCave();
+
+if(id!=="cave")caveRunning=false;
 update();
 }
-function worldCost(i){return Math.floor(500*Math.pow(5.2,i))}
-function worldPower(i){return Math.pow(2.7,i)}
+
+function worldCost(i){
+return Math.floor(500*Math.pow(5.2,i));
+}
+
+function worldPower(i){
+return Math.pow(2.7,i);
+}
+
 function getPetPower(){
 return game.equipped.reduce((sum,id)=>{
 const p=game.pets.find(x=>x.id===id);
 return sum+(p?p.power:0);
 },0);
 }
+
 function getPower(){
 let p=Math.pow(1.65,game.pick)*worldPower(game.world)*Math.pow(1.35,game.enchant);
 p+=getPetPower();
 p*=1+game.rebirths*.5;
 p*=1+(game.base-1)*.15;
+p*=1+game.secretPower*.25;
 if(Date.now()<game.boostUntil)p*=2;
 if(Date.now()<game.potionUntil)p*=1.5;
 return Math.max(1,Math.floor(p));
 }
+
 function currentCrystal(){
-let index=(game.crystals%100);
-return {
+let index=game.crystals%100;
+return{
 name:"Crystal "+(index+1),
 emoji:WORLD_EMOJIS[game.world],
 max:Math.floor(100*Math.pow(1.5,game.world)*(1+index*.12))
 };
 }
-let crystalHealth=100;
+
 function resetCrystal(){
-const c=currentCrystal();crystalHealth=c.max;
+const c=currentCrystal();
+crystalHealth=c.max;
 document.getElementById("crystalName").textContent=c.name;
 document.getElementById("crystalEmoji").textContent=c.emoji;
 }
+
 function mine(){
-const p=getPower();
-crystalHealth-=p;
-game.totalMined++;game.dailyProgress++;game.weeklyProgress++;
+crystalHealth-=getPower();
+game.totalMined++;
+game.dailyProgress++;
+game.weeklyProgress++;
+
 if(crystalHealth<=0){
 let reward=Math.floor((20+game.world*25+game.crystals*2)*worldPower(game.world));
 let mutation="";
 const r=Math.random();
+
 if(r<.01){reward*=100;mutation=" 🌈 RAINBOW MUTATION!";}
 else if(r<.035){reward*=20;mutation=" 🟡 GOLDEN MUTATION!";}
 else if(r<.08){reward*=5;mutation=" ☢️ RADIOACTIVE MUTATION!";}
 else if(r<.15){reward*=3;mutation=" 🪨 GIANT MUTATION!";}
+
 game.gems+=reward;
 game.crystals++;
 notify("Crystal destroyed! +"+fmt(reward)+" gems"+mutation);
 resetCrystal();
 }
-update();save();
+update();
+save();
 }
+
 function buyMiner(){
 let price=Math.floor(500*Math.pow(2,game.miners));
 if(game.gems<price)return notify("Not enough gems!");
-game.gems-=price;game.miners++;
+game.gems-=price;
+game.miners++;
 notify("You bought an auto miner!");
-update();save();
+update();
+save();
 }
+
 function buyBoost(){
 if(game.gems<300)return notify("Not enough gems!");
-game.gems-=300;game.boostUntil=Date.now()+60000;
+game.gems-=300;
+game.boostUntil=Date.now()+60000;
 notify("2x boost activated for 60 seconds!");
-update();save();
+update();
+save();
 }
+
 function dailyGift(){
 const today=new Date().toDateString();
 if(game.dailyClaim===today)return notify("You already claimed today's gift!");
-game.dailyClaim=today;game.gems+=250;
+game.dailyClaim=today;
+game.gems+=250;
 notify("Daily gift: 250 gems!");
-update();save();
+update();
+save();
 }
+
 function renderPickaxes(){
-const box=document.getElementById("pickaxeList");box.innerHTML="";
+const box=document.getElementById("pickaxeList");
+box.innerHTML="";
+
 for(let i=0;i<100;i++){
 let power=Math.floor(Math.pow(1.65,i));
 let price=Math.floor(100*Math.pow(2.1,i));
 let name=PICK_NAMES[i]||(["Ancient","Mythic","Celestial","Eternal","GOD"][i%5]+" Pickaxe "+(i+1));
 let owned=game.pick>=i;
-let div=document.createElement("div");div.className="item";
+let div=document.createElement("div");
+div.className="item";
 div.innerHTML=`<h3>⛏️ ${name}</h3><p>Power: ${fmt(power)}</p><p>Price: ${fmt(price)} gems</p><button ${owned?"disabled":""} onclick="buyPickaxe(${i})">${owned?"Owned":"Buy Pickaxe"}</button>`;
 box.appendChild(div);
 }
-document.getElementById("pickaxeInfo").textContent="Your current pickaxe: "+(PICK_NAMES[game.pick]||"GOD Pickaxe");
+
+document.getElementById("pickaxeInfo").textContent=
+"Your current pickaxe: "+(PICK_NAMES[game.pick]||"GOD Pickaxe");
 }
+
 function buyPickaxe(i){
 let price=Math.floor(100*Math.pow(2.1,i));
 if(i!==game.pick+1)return notify("Buy the previous pickaxe first!");
 if(game.gems<price)return notify("Not enough gems!");
-game.gems-=price;game.pick=i;
+game.gems-=price;
+game.pick=i;
 notify("New pickaxe unlocked!");
-update();renderPickaxes();save();
+update();
+renderPickaxes();
+save();
 }
+
 function enchantPickaxe(){
 let price=Math.floor(500*Math.pow(3,game.enchant));
 if(game.gems<price)return notify("Not enough gems!");
-game.gems-=price;game.enchant++;
+game.gems-=price;
+game.enchant++;
 notify("Pickaxe enchanted! Level "+game.enchant);
-update();save();
+update();
+save();
 }
+
 function petPower(world,egg,pet,rarity){
 return Math.floor((world+1)*Math.pow(2,egg)*RARITY_MULT[rarity]);
 }
-function petName(w,e,p){return PET_NAMES[p]+" of "+WORLD_NAMES[w]+" "+(e+1)}
+
+function petName(w,e,p){
+return PET_NAMES[p]+" of "+WORLD_NAMES[w]+" "+(e+1);
+}
+
 function renderEggs(){
-let sel=document.getElementById("eggSelect");sel.innerHTML="";
+let sel=document.getElementById("eggSelect");
+sel.innerHTML="";
+
 for(let w=0;w<=game.unlocked;w++){
 for(let e=0;e<3;e++){
-let op=document.createElement("option");op.value=w+"-"+e;
+let op=document.createElement("option");
+op.value=w+"-"+e;
 op.textContent=WORLD_NAMES[w]+" Egg "+(e+1)+" | "+fmt(100*Math.pow(4,w)*Math.pow(3,e))+" gems";
 sel.appendChild(op);
-}}
 }
+}
+}
+
 function hatchEgg(){
 let [w,e]=document.getElementById("eggSelect").value.split("-").map(Number);
 let price=Math.floor(100*Math.pow(4,w)*Math.pow(3,e));
 if(game.gems<price)return notify("Not enough gems!");
 game.gems-=price;
+
 let rarity=Math.floor(Math.random()*7);
 let p=Math.floor(Math.random()*5);
-let pet={id:Date.now()+Math.random(),name:petName(w,e,p),emoji:PET_EMOJIS[p],world:w,egg:e,rarity:rarity,power:petPower(w,e,p,rarity),evolved:false};
-game.pets.push(pet);
-notify("You hatched "+RARITIES[rarity]+" "+pet.name+"!");
-update();renderPets();save();
+
+game.pets.push({
+id:Date.now()+Math.random(),
+name:petName(w,e,p),
+emoji:PET_EMOJIS[p],
+world:w,egg:e,rarity:rarity,
+power:petPower(w,e,p,rarity),
+evolved:false
+});
+
+notify("You hatched "+RARITIES[rarity]+" "+petName(w,e,p)+"!");
+update();
+renderPets();
+save();
 }
+
 function renderPets(){
-let box=document.getElementById("petList");box.innerHTML="";
-document.getElementById("petCount").textContent=game.pets.length+" pets owned. "+game.equipped.length+"/3 equipped.";
+let box=document.getElementById("petList");
+box.innerHTML="";
+document.getElementById("petCount").textContent=
+game.pets.length+" pets owned. "+game.equipped.length+"/3 equipped.";
+
 game.pets.forEach(p=>{
 let active=game.equipped.includes(p.id);
-let d=document.createElement("div");d.className="item";
+let d=document.createElement("div");
+d.className="item";
 d.innerHTML=`<h3>${p.emoji} ${p.name}</h3><p>${RARITIES[p.rarity]} ${p.evolved?"⭐ EVOLVED":""}</p><p>Power: ${fmt(p.power)}</p><button onclick="togglePet(${JSON.stringify(p.id)})">${active?"Unequip":"Equip"}</button>`;
 box.appendChild(d);
 });
-let sel=document.getElementById("evolveSelect");sel.innerHTML="";
+
+let sel=document.getElementById("evolveSelect");
+sel.innerHTML="";
 let counts={};
-game.pets.forEach(p=>{let k=p.name+"|"+p.rarity;if(!counts[k])counts[k]={pet:p,count:0};counts[k].count++});
+
+game.pets.forEach(p=>{
+let k=p.name+"|"+p.rarity;
+if(!counts[k])counts[k]={pet:p,count:0};
+counts[k].count++;
+});
+
 Object.values(counts).filter(x=>x.count>=3).forEach(x=>{
-let op=document.createElement("option");op.value=x.pet.id;
+let op=document.createElement("option");
+op.value=x.pet.id;
 op.textContent=x.pet.name+" ("+x.count+" available)";
 sel.appendChild(op);
 });
 }
+
 function togglePet(id){
-if(game.equipped.includes(id))game.equipped=game.equipped.filter(x=>x!==id);
-else if(game.equipped.length>=3)return notify("You can equip only 3 pets!");
-else game.equipped.push(id);
-renderPets();update();save();
+if(game.equipped.includes(id)){
+game.equipped=game.equipped.filter(x=>x!==id);
+}else if(game.equipped.length>=3){
+return notify("You can equip only 3 pets!");
+}else{
+game.equipped.push(id);
 }
+renderPets();
+update();
+save();
+}
+
 function evolvePet(){
 let id=Number(document.getElementById("evolveSelect").value);
 let chosen=game.pets.find(p=>p.id===id);
 if(!chosen)return notify("You need 3 matching pets!");
+
 let matches=game.pets.filter(p=>p.name===chosen.name&&p.rarity===chosen.rarity).slice(0,3);
 if(matches.length<3)return notify("You need 3 matching pets!");
+
 let ids=matches.map(p=>p.id);
 game.pets=game.pets.filter(p=>!ids.includes(p.id));
 game.equipped=game.equipped.filter(x=>!ids.includes(x));
-chosen={...chosen,id:Date.now()+Math.random(),power:chosen.power*5,evolved:true,rarity:Math.min(6,chosen.rarity+1)};
-game.pets.push(chosen);
+
+game.pets.push({
+...chosen,
+id:Date.now()+Math.random(),
+power:chosen.power*5,
+evolved:true,
+rarity:Math.min(6,chosen.rarity+1)
+});
+
 notify("Your pet evolved! Power x5!");
-renderPets();update();save();
+renderPets();
+update();
+save();
 }
+
 function renderWorlds(){
-let box=document.getElementById("worldList");box.innerHTML="";
+let box=document.getElementById("worldList");
+box.innerHTML="";
+
 WORLD_NAMES.forEach((name,i)=>{
 let price=worldCost(i);
-let d=document.createElement("div");d.className="item";
+let d=document.createElement("div");
+d.className="item";
 d.innerHTML=`<h3>${WORLD_EMOJIS[i]} ${name}</h3><p>Crystal power: x${fmt(worldPower(i))}</p><p>${i<=game.unlocked?"Unlocked":"Unlock: "+fmt(price)+" gems"}</p><button ${i<=game.unlocked?"disabled":""} onclick="unlockWorld(${i})">${i<=game.unlocked?"Unlocked":"Unlock World"}</button><button onclick="travelWorld(${i})" ${i>game.unlocked?"disabled":""}>Travel</button>`;
 box.appendChild(d);
 });
 }
+
 function unlockWorld(i){
 if(i!==game.unlocked+1)return notify("Unlock the previous world first!");
 let price=worldCost(i);
 if(game.gems<price)return notify("Not enough gems!");
-game.gems-=price;game.unlocked=i;
+
+game.gems-=price;
+game.unlocked=i;
 notify("World unlocked: "+WORLD_NAMES[i]);
-renderWorlds();renderEggs();update();save();
+renderWorlds();
+renderEggs();
+update();
+save();
 }
+
 function travelWorld(i){
 if(i>game.unlocked)return;
-game.world=i;resetCrystal();notify("Welcome to "+WORLD_NAMES[i]+"!");
-update();save();
+game.world=i;
+resetCrystal();
+notify("Welcome to "+WORLD_NAMES[i]+"!");
+update();
+save();
 }
+
 function attackBoss(){
 let damage=getPower()*5;
 game.bossHealth-=damage;
+
 if(game.bossHealth<=0){
-game.bossKills++;game.gems+=Math.floor(1000*Math.pow(2,game.world));
-game.bossMax=Math.floor(game.bossMax*1.5);game.bossHealth=game.bossMax;
+game.bossKills++;
+game.gems+=Math.floor(1000*Math.pow(2,game.world));
+game.bossMax=Math.floor(game.bossMax*1.5);
+game.bossHealth=game.bossMax;
 notify("BOSS DEFEATED! Huge gem reward!");
-}else notify("Boss hit for "+fmt(damage)+" damage!");
-update();save();
+}else{
+notify("Boss hit for "+fmt(damage)+" damage!");
 }
-function exploreCave(){
-if(Math.random()<.35){
-let reward=Math.floor(1000*Math.pow(2,game.world));
-game.gems+=reward;game.caveFinds++;
-notify("Secret cave found! +"+fmt(reward)+" gems!");
-}else notify("No cave this time. Try again later!");
-update();save();
+
+update();
+save();
 }
+
 function upgradeBase(){
 let price=Math.floor(1000*Math.pow(3,game.base-1));
 if(game.gems<price)return notify("Not enough gems!");
-game.gems-=price;game.base++;
+game.gems-=price;
+game.base++;
 notify("Your base is now level "+game.base+"!");
-update();save();
+update();
+save();
 }
+
 function buyPotion(){
 if(game.gems<200)return notify("Not enough gems!");
-game.gems-=200;game.potionUntil=Date.now()+60000;
+game.gems-=200;
+game.potionUntil=Date.now()+60000;
 notify("Mining potion active for 60 seconds!");
-update();save();
+update();
+save();
 }
+
 function buyMysteryEgg(){
 if(game.gems<500)return notify("Not enough gems!");
 game.gems-=500;
-let rarity=Math.floor(Math.random()*7),p=Math.floor(Math.random()*5);
-game.pets.push({id:Date.now()+Math.random(),name:"Mystery "+PET_NAMES[p],emoji:PET_EMOJIS[p],rarity,power:petPower(game.world,0,p,rarity),evolved:false});
+
+let rarity=Math.floor(Math.random()*7);
+let p=Math.floor(Math.random()*5);
+
+game.pets.push({
+id:Date.now()+Math.random(),
+name:"Mystery "+PET_NAMES[p],
+emoji:PET_EMOJIS[p],
+rarity,
+power:petPower(game.world,0,p,rarity),
+evolved:false
+});
+
 notify("Mystery pet hatched!");
-renderPets();update();save();
+renderPets();
+update();
+save();
 }
+
 function sellPet(){
 let p=game.pets.find(x=>!game.equipped.includes(x.id));
 if(!p)return notify("No unequipped pets to sell!");
+
 game.pets=game.pets.filter(x=>x.id!==p.id);
 game.gems+=Math.max(50,p.power*10);
 notify("Pet sold!");
-renderPets();update();save();
+renderPets();
+update();
+save();
 }
+
 function buySecretPower(){
 if(game.world!==20)return notify("Travel to GOD'S DOMAIN first!");
 if(game.gems<1000000)return notify("You need 1,000,000 gems!");
-game.gems-=1000000;game.secretPower++;
+
+game.gems-=1000000;
+game.secretPower++;
 notify("Divine power unlocked!");
-update();save();
+update();
+save();
 }
+
 function rebirth(){
 let required=1000000*Math.pow(10,game.rebirths);
 if(game.gems<required)return notify("You need "+fmt(required)+" gems to rebirth!");
+
 if(!confirm("Rebirth? Your gems, worlds and pickaxe progress will reset. Pets and achievements stay."))return;
-game.rebirths++;game.gems=0;game.world=0;game.unlocked=0;game.pick=0;game.miners=0;game.enchant=0;game.base=1;game.crystals=0;
-game.bossHealth=100;game.bossMax=100;
-resetCrystal();notify("REBIRTH COMPLETE! Permanent power increased!");
-update();renderWorlds();renderPickaxes();save();
+
+game.rebirths++;
+game.gems=0;
+game.world=0;
+game.unlocked=0;
+game.pick=0;
+game.miners=0;
+game.enchant=0;
+game.base=1;
+game.crystals=0;
+game.bossHealth=100;
+game.bossMax=100;
+
+resetCrystal();
+notify("REBIRTH COMPLETE! Permanent power increased!");
+update();
+renderWorlds();
+renderPickaxes();
+save();
 }
+
 function renderQuests(){
-const d=document.getElementById("dailyQuests");
-const w=document.getElementById("weeklyQuests");
-d.innerHTML=`<div class="item"><h3>⛏️ Daily Miner</h3><p>Mine 25 crystals. Progress: ${game.dailyProgress}/25</p><button onclick="claimQuest('daily')" ${game.dailyProgress<25?"disabled":""}>Claim 500 gems</button></div>`;
-w.innerHTML=`<div class="item"><h3>💎 Weekly Legend</h3><p>Mine 250 crystals. Progress: ${game.weeklyProgress}/250</p><button onclick="claimQuest('weekly')" ${game.weeklyProgress<250?"disabled":""}>Claim 5,000 gems</button></div>`;
+document.getElementById("dailyQuests").innerHTML=
+`<div class="item"><h3>⛏️ Daily Miner</h3><p>Mine 25 times. Progress: ${game.dailyProgress}/25</p><button onclick="claimQuest('daily')" ${game.dailyProgress<25?"disabled":""}>Claim 500 gems</button></div>`;
+
+document.getElementById("weeklyQuests").innerHTML=
+`<div class="item"><h3>💎 Weekly Legend</h3><p>Mine 250 times. Progress: ${game.weeklyProgress}/250</p><button onclick="claimQuest('weekly')" ${game.weeklyProgress<250?"disabled":""}>Claim 5,000 gems</button></div>`;
 }
+
 function claimQuest(type){
 if(type==="daily"){
 if(game.dailyProgress<25)return;
-game.dailyProgress-=25;game.gems+=500;
+game.dailyProgress-=25;
+game.gems+=500;
 }else{
 if(game.weeklyProgress<250)return;
-game.weeklyProgress-=250;game.gems+=5000;
+game.weeklyProgress-=250;
+game.gems+=5000;
 }
-notify("Quest reward claimed!");renderQuests();update();save();
+
+notify("Quest reward claimed!");
+renderQuests();
+update();
+save();
 }
+
 function renderAchievements(){
 const all=[
 ["First Crystal",game.totalMined>=1,"Mine your first crystal."],
-["Crystal Collector",game.totalMined>=100,"Mine 100 crystals."],
+["Crystal Collector",game.totalMined>=100,"Mine 100 times."],
 ["Pet Owner",game.pets.length>=1,"Hatch your first pet."],
 ["Pet Collector",game.pets.length>=25,"Own 25 pets."],
 ["Boss Hunter",game.bossKills>=1,"Defeat a world boss."],
-["Cave Explorer",game.caveFinds>=1,"Find a secret cave."],
+["Cave Explorer",game.caveFinds>=1,"Mine a cave crystal."],
 ["World Traveler",game.unlocked>=5,"Unlock 5 worlds."],
 ["Reborn",game.rebirths>=1,"Complete your first rebirth."],
 ["Divine Miner",game.world===20,"Reach GOD'S DOMAIN."]
 ];
-let box=document.getElementById("achievementList");box.innerHTML="";
+
+let box=document.getElementById("achievementList");
+box.innerHTML="";
+
 all.forEach(([name,done,desc])=>{
-if(done&&!game.achievements.includes(name)){game.achievements.push(name);game.gems+=250}
-let d=document.createElement("div");d.className="item";
+if(done&&!game.achievements.includes(name)){
+game.achievements.push(name);
+game.gems+=250;
+}
+
+let d=document.createElement("div");
+d.className="item";
 d.innerHTML=`<h3>${done?"🏆":"🔒"} ${name}</h3><p>${desc}</p><span class="tag">${done?"Completed":"Locked"}</span>`;
 box.appendChild(d);
 });
+
 save();
 }
+
 function startEvent(){
 const names=["Double Gems","Crystal Rush","Pet Luck","Boss Frenzy","Mining Power Surge"];
 game.eventName=names[Math.floor(Math.random()*names.length)];
 game.eventUntil=Date.now()+60000;
 notify("EVENT STARTED: "+game.eventName+"!");
 }
+
 function updateEvent(){
-if(Date.now()>game.eventUntil && Date.now()-game.lastEvent>120000){
-game.lastEvent=Date.now();startEvent();
+if(Date.now()>game.eventUntil&&Date.now()-game.lastEvent>120000){
+game.lastEvent=Date.now();
+startEvent();
 }
+
 let active=Date.now()<game.eventUntil;
-document.getElementById("eventText").textContent=active?game.eventName+" is active!":"Next event coming soon.";
-document.getElementById("eventTimer").textContent=active?"Event ends in "+Math.ceil((game.eventUntil-Date.now())/1000)+" seconds":"Events start every few minutes.";
+document.getElementById("eventText").textContent=
+active?game.eventName+" is active!":"Next event coming soon.";
+
+document.getElementById("eventTimer").textContent=
+active?"Event ends in "+Math.ceil((game.eventUntil-Date.now())/1000)+" seconds":"Events start every few minutes.";
 }
+
+/* =====================================
+   3D CRYSTAL CAVE
+===================================== */
+
+function enterCave(){
+caveRunning=true;
+
+if(!window.THREE){
+document.getElementById("caveMessage").textContent=
+"3D engine could not load. Check your internet connection and refresh.";
+return;
+}
+
+if(!caveStarted){
+createCave();
+}else{
+resizeCave();
+}
+
+if(caveAnimation===null){
+animateCave();
+}
+}
+
+function createCave(){
+const container=document.getElementById("cave3d");
+
+caveScene=new THREE.Scene();
+caveScene.background=new THREE.Color(0x090817);
+caveScene.fog=new THREE.Fog(0x090817,8,32);
+
+caveCamera=new THREE.PerspectiveCamera(
+75,
+container.clientWidth/container.clientHeight,
+0.1,
+100
+);
+
+caveCamera.position.set(0,1.7,7);
+caveYaw=0;
+caveCamera.rotation.order="YXZ";
+
+caveRenderer=new THREE.WebGLRenderer({antialias:true});
+caveRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+caveRenderer.setSize(container.clientWidth,container.clientHeight);
+container.innerHTML="";
+container.appendChild(caveRenderer.domElement);
+
+const ambient=new THREE.AmbientLight(0x7777aa,1.5);
+caveScene.add(ambient);
+
+const purpleLight=new THREE.PointLight(0x8833ff,3,30);
+purpleLight.position.set(0,4,0);
+caveScene.add(purpleLight);
+
+const blueLight=new THREE.PointLight(0x2255ff,2,18);
+blueLight.position.set(-4,2,-6);
+caveScene.add(blueLight);
+
+const floor=new THREE.Mesh(
+new THREE.PlaneGeometry(40,40),
+new THREE.MeshStandardMaterial({color:0x211936,roughness:1})
+);
+floor.rotation.x=-Math.PI/2;
+floor.position.y=0;
+caveScene.add(floor);
+
+const rockMaterial=new THREE.MeshStandardMaterial({
+color:0x171125,
+roughness:1
+});
+
+function addRock(x,y,z,sx,sy,sz){
+const rock=new THREE.Mesh(
+new THREE.BoxGeometry(sx,sy,sz),
+rockMaterial
+);
+rock.position.set(x,y,z);
+caveScene.add(rock);
+}
+
+addRock(-7,3,0,1,6,20);
+addRock(7,3,0,1,6,20);
+addRock(0,3,-10,14,6,1);
+addRock(0,3,10,14,6,1);
+
+// Ceiling rocks
+for(let i=0;i<22;i++){
+const rock=new THREE.Mesh(
+new THREE.DodecahedronGeometry(.5+Math.random()*.8),
+rockMaterial
+);
+rock.position.set(-6+Math.random()*12,5,-9+Math.random()*18);
+caveScene.add(rock);
+}
+
+// Decorative rocks
+for(let i=0;i<35;i++){
+const rock=new THREE.Mesh(
+new THREE.DodecahedronGeometry(.3+Math.random()*.5),
+rockMaterial
+);
+rock.position.set(-6+Math.random()*12,.3,-9+Math.random()*18);
+caveScene.add(rock);
+}
+
+// Crystal colors
+const crystalColors=[
+0x8b4dff,
+0x22ddff,
+0x44ff99,
+0xff44dd,
+0xffcc33
+];
+
+caveCrystals=[];
+
+for(let i=0;i<30;i++){
+const color=crystalColors[Math.floor(Math.random()*crystalColors.length)];
+
+const geometry=new THREE.OctahedronGeometry(
+.45+Math.random()*.45,
+0
+);
+
+const material=new THREE.MeshStandardMaterial({
+color:color,
+emissive:color,
+emissiveIntensity:1,
+metalness:.3,
+roughness:.2
+});
+
+const crystal=new THREE.Mesh(geometry,material);
+
+crystal.position.set(
+-5+Math.random()*10,
+.8+Math.random()*1.3,
+-8+Math.random()*14
+);
+
+crystal.rotation.set(Math.random(),Math.random(),Math.random());
+crystal.userData.mined=false;
+crystal.userData.value=100+Math.floor(Math.random()*500);
+
+caveScene.add(crystal);
+caveCrystals.push(crystal);
+}
+
+// A glowing cave entrance marker
+const markerLight=new THREE.PointLight(0x9944ff,3,10);
+markerLight.position.set(0,2,8);
+caveScene.add(markerLight);
+
+caveStarted=true;
+caveRunning=true;
+
+document.getElementById("caveMessage").textContent=
+"Welcome, miner! Find a glowing crystal and get close to mine it.";
+
+resizeCave();
+}
+
+function resizeCave(){
+if(!caveRenderer||!caveCamera)return;
+
+const container=document.getElementById("cave3d");
+const w=container.clientWidth;
+const h=container.clientHeight;
+
+if(!w||!h)return;
+
+caveCamera.aspect=w/h;
+caveCamera.updateProjectionMatrix();
+caveRenderer.setSize(w,h);
+}
+
+function animateCave(){
+caveAnimation=requestAnimationFrame(animateCave);
+
+if(!caveScene||!caveCamera||!caveRenderer)return;
+
+if(caveRunning){
+const speed=.075;
+
+let forward=0;
+let sideways=0;
+
+if(caveKeys["w"]||caveKeys["arrowup"])forward+=1;
+if(caveKeys["s"]||caveKeys["arrowdown"])forward-=1;
+if(caveKeys["a"]||caveKeys["arrowleft"])sideways-=1;
+if(caveKeys["d"]||caveKeys["arrowright"])sideways+=1;
+
+if(caveKeys["q"])caveYaw+=.035;
+if(caveKeys["e"])caveYaw-=.035;
+
+const dx=Math.sin(caveYaw)*forward*speed;
+const dz=-Math.cos(caveYaw)*forward*speed;
+
+const sx=Math.cos(caveYaw)*sideways*speed;
+const sz=Math.sin(caveYaw)*sideways*speed;
+
+caveCamera.position.x+=dx+sx;
+caveCamera.position.z+=dz+sz;
+
+caveCamera.position.x=Math.max(-5.5,Math.min(5.5,caveCamera.position.x));
+caveCamera.position.z=Math.max(-8.5,Math.min(8.5,caveCamera.position.z));
+
+caveCamera.rotation.y=caveYaw;
+
+caveCrystals.forEach(crystal=>{
+if(!crystal.userData.mined){
+crystal.rotation.y+=.012;
+crystal.position.y+=Math.sin(Date.now()*.001+crystal.position.x)*.002;
+}
+});
+}
+
+caveRenderer.render(caveScene,caveCamera);
+}
+
+function moveCave(direction){
+if(!caveStarted)return;
+
+const speed=1;
+const dx=Math.sin(caveYaw);
+const dz=-Math.cos(caveYaw);
+
+if(direction==="forward"){
+caveCamera.position.x+=dx*speed;
+caveCamera.position.z+=dz*speed;
+}
+if(direction==="back"){
+caveCamera.position.x-=dx*speed;
+caveCamera.position.z-=dz*speed;
+}
+if(direction==="left"){
+caveCamera.position.x-=Math.cos(caveYaw)*speed;
+caveCamera.position.z-=Math.sin(caveYaw)*speed;
+}
+if(direction==="right"){
+caveCamera.position.x+=Math.cos(caveYaw)*speed;
+caveCamera.position.z+=Math.sin(caveYaw)*speed;
+}
+
+caveCamera.position.x=Math.max(-5.5,Math.min(5.5,caveCamera.position.x));
+caveCamera.position.z=Math.max(-8.5,Math.min(8.5,caveCamera.position.z));
+}
+
+function turnCave(direction){
+if(!caveStarted)return;
+caveYaw+=direction*.45;
+caveCamera.rotation.y=caveYaw;
+}
+
+function mineCaveCrystal(){
+if(!caveStarted)return;
+
+let closest=null;
+let closestDistance=Infinity;
+
+caveCrystals.forEach(crystal=>{
+if(crystal.userData.mined)return;
+
+const distance=caveCamera.position.distanceTo(crystal.position);
+
+if(distance<closestDistance){
+closestDistance=distance;
+closest=crystal;
+}
+});
+
+if(!closest||closestDistance>3.5){
+document.getElementById("caveMessage").textContent=
+"Walk closer to a glowing crystal before mining!";
+return;
+}
+
+closest.userData.mined=true;
+closest.visible=false;
+
+let reward=closest.userData.value*(game.world+1);
+reward=Math.floor(reward*(1+game.rebirths*.25));
+
+game.gems+=reward;
+game.caveFinds++;
+game.totalMined++;
+
+document.getElementById("caveMessage").textContent=
+"💎 CRYSTAL MINED! You found "+fmt(reward)+" gems!";
+
+notify("Cave crystal collected! +"+fmt(reward)+" gems!");
+update();
+save();
+}
+
+function leaveCave(){
+caveRunning=false;
+showTab("mine");
+notify("You left the crystal cave!");
+}
+
+window.addEventListener("keydown",e=>{
+const key=e.key.toLowerCase();
+
+if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(key)){
+if(document.getElementById("cave").classList.contains("hidden")===false){
+e.preventDefault();
+}
+}
+
+caveKeys[key]=true;
+
+if(key==="f"&&!document.getElementById("cave").classList.contains("hidden")){
+mineCaveCrystal();
+}
+});
+
+window.addEventListener("keyup",e=>{
+caveKeys[e.key.toLowerCase()]=false;
+});
+
+window.addEventListener("blur",()=>{
+caveKeys={};
+});
+
+window.addEventListener("resize",resizeCave);
+
+/* =====================================
+   GAME UPDATE AND SAVE
+===================================== */
+
 function update(){
 document.getElementById("gems").textContent=fmt(game.gems);
 document.getElementById("power").textContent=fmt(getPower());
 document.getElementById("rebirths").textContent=game.rebirths;
 document.getElementById("minePower").textContent=fmt(getPower());
+
 document.getElementById("worldName").textContent=WORLD_NAMES[game.world];
 document.getElementById("minerText").textContent=game.miners+" auto miners";
 document.getElementById("baseLevel").textContent="Base level "+game.base;
 document.getElementById("enchantText").textContent="Enchant level: "+game.enchant;
-document.getElementById("boostText").textContent=Date.now()<game.boostUntil?"2x boost active!":"No active boost";
-document.getElementById("crystalHealth").textContent="Crystal strength: "+fmt(Math.max(0,crystalHealth))+" / "+fmt(currentCrystal().max);
-document.getElementById("crystalBar").style.width=(Math.max(0,crystalHealth)/currentCrystal().max*100)+"%";
-document.getElementById("bossText").textContent="Boss health: "+fmt(game.bossHealth)+" / "+fmt(game.bossMax);
-document.getElementById("bossBar").style.width=(game.bossHealth/game.bossMax*100)+"%";
-document.getElementById("rebirthInfo").textContent="Rebirths: "+game.rebirths+" | Required gems: "+fmt(1000000*Math.pow(10,game.rebirths))+" | Permanent bonus: +"+(game.rebirths*50)+"% power";
+
+document.getElementById("boostText").textContent=
+Date.now()<game.boostUntil?"2x boost active!":"No active boost";
+
+document.getElementById("crystalHealth").textContent=
+"Crystal strength: "+fmt(Math.max(0,crystalHealth))+" / "+fmt(currentCrystal().max);
+
+document.getElementById("crystalBar").style.width=
+(Math.max(0,crystalHealth)/currentCrystal().max*100)+"%";
+
+document.getElementById("bossText").textContent=
+"Boss health: "+fmt(game.bossHealth)+" / "+fmt(game.bossMax);
+
+document.getElementById("bossBar").style.width=
+(game.bossHealth/game.bossMax*100)+"%";
+
+document.getElementById("rebirthInfo").textContent=
+"Rebirths: "+game.rebirths+
+" | Required gems: "+fmt(1000000*Math.pow(10,game.rebirths))+
+" | Permanent bonus: +"+(game.rebirths*50)+"% power";
+
 document.getElementById("secretShop").classList.toggle("hidden",game.world!==20);
+
 updateEvent();
 }
+
 load();
 resetCrystal();
 renderEggs();
 update();
+
 setInterval(()=>{
 if(game.miners>0){
 game.gems+=game.miners*getPower();
 }
+
 game.playSeconds++;
 update();
+
 if(game.playSeconds%10===0)save();
 },1000);
+
 setInterval(save,15000);
 </script>
 </body>
