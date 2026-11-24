@@ -36,11 +36,12 @@ main{max-width:1150px;margin:auto;padding:18px}
 .hidden{display:none!important}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#7149d9;padding:12px 20px;border-radius:12px;display:none;z-index:30;box-shadow:0 5px 25px #000}
 footer{text-align:center;color:#81749e;padding:25px}
-#cave3d{width:100%;height:480px;background:#090817;border-radius:14px;overflow:hidden;position:relative}
-#cave3d canvas{display:block;width:100%;height:100%}
-.caveControls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:400px;margin:12px auto}
+#cave3d{width:100%;height:500px;background:#090817;border-radius:14px;overflow:hidden;position:relative;border:2px solid #6541c9;box-shadow:0 0 25px #48258b;cursor:crosshair}
+#cave3d canvas{display:block;width:100%;height:100%;touch-action:none}
+.caveControls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:430px;margin:12px auto}
 .caveControls button{padding:15px}
 .caveHelp{font-size:13px;color:#b9a8d9;text-align:center;margin:8px}
+#cameraMode{color:#c7a8ff;margin-bottom:8px}
 @media(max-width:600px){
  header{align-items:flex-start}
  nav button{flex:1}
@@ -53,203 +54,222 @@ footer{text-align:center;color:#81749e;padding:25px}
 <body>
 
 <header>
-  <h1>💎 GRISTAL.IO</h1>
-  <div class="stats">
-    <div class="stat">💎 <span id="gems">0</span></div>
-    <div class="stat">⚡ <span id="power">1</span></div>
-    <div class="stat">♻️ <span id="rebirths">0</span></div>
-  </div>
+<h1>💎 GRISTAL.IO</h1>
+<div class="stats">
+<div class="stat">💎 <span id="gems">0</span></div>
+<div class="stat">⚡ <span id="power">1</span></div>
+<div class="stat">♻️ <span id="rebirths">0</span></div>
+</div>
 </header>
 
 <nav>
-  <button onclick="showTab('mine')">⛏️ Mine</button>
-  <button onclick="showTab('shop')">🛠️ Pickaxes</button>
-  <button onclick="showTab('pets')">🐾 Pets</button>
-  <button onclick="showTab('worlds')">🌍 Worlds</button>
-  <button onclick="showTab('quests')">📜 Quests</button>
-  <button onclick="showTab('base')">🏠 Base</button>
-  <button onclick="showTab('market')">🏪 Market</button>
-  <button onclick="showTab('achievements')">🏆 Achievements</button>
-  <button onclick="showTab('rebirth')">♻️ Rebirth</button>
+<button onclick="showTab('mine')">⛏️ Mine</button>
+<button onclick="showTab('shop')">🛠️ Pickaxes</button>
+<button onclick="showTab('pets')">🐾 Pets</button>
+<button onclick="showTab('worlds')">🌍 Worlds</button>
+<button onclick="showTab('quests')">📜 Quests</button>
+<button onclick="showTab('base')">🏠 Base</button>
+<button onclick="showTab('market')">🏪 Market</button>
+<button onclick="showTab('achievements')">🏆 Achievements</button>
+<button onclick="showTab('rebirth')">♻️ Rebirth</button>
 </nav>
 
 <main>
 
 <section id="mine" class="tab">
-  <div class="panel">
-    <h2>⛏️ Crystal Mining</h2>
-    <p id="worldName">Crystal Kingdom</p>
-    <div class="big" id="crystalEmoji">💎</div>
-    <h2 style="text-align:center" id="crystalName">Crystal 1</h2>
-    <p style="text-align:center" id="crystalHealth">Crystal strength: 100</p>
-    <div class="bar"><span id="crystalBar"></span></div>
-    <button id="mineButton" onclick="mine()">⛏️ MINE CRYSTAL!</button>
-    <p style="text-align:center;margin-top:10px">Mining power: <b id="minePower">1</b></p>
-    <p style="text-align:center" class="muted">Discover rare crystal mutations!</p>
-  </div>
+<div class="panel">
+<h2>⛏️ Crystal Mining</h2>
+<p id="worldName">Crystal Kingdom</p>
+<div class="big" id="crystalEmoji">💎</div>
+<h2 style="text-align:center" id="crystalName">Crystal 1</h2>
+<p style="text-align:center" id="crystalHealth">Crystal strength: 100</p>
+<div class="bar"><span id="crystalBar"></span></div>
+<button id="mineButton" onclick="mine()">⛏️ MINE CRYSTAL!</button>
+<p style="text-align:center;margin-top:10px">Mining power: <b id="minePower">1</b></p>
+<p style="text-align:center" class="muted">Discover rare crystal mutations!</p>
+</div>
 
-  <div class="grid">
-    <div class="item">
-      <h3>🤖 Auto Miners</h3>
-      <p id="minerText">0 miners</p>
-      <button onclick="buyMiner()">Buy Miner</button>
-    </div>
-    <div class="item">
-      <h3>🎁 Daily Gift</h3>
-      <p>Claim 250 free gems once per day.</p>
-      <button onclick="dailyGift()">Claim Gift</button>
-    </div>
-    <div class="item">
-      <h3>⚡ Boost</h3>
-      <p id="boostText">No active boost</p>
-      <button onclick="buyBoost()">Buy 2x Boost: 300 💎</button>
-    </div>
-    <div class="item">
-      <h3>🌟 Global Event</h3>
-      <p id="eventText">Waiting for an event.</p>
-      <p id="eventTimer" class="muted"></p>
-    </div>
-  </div>
+<div class="grid">
+<div class="item">
+<h3>🤖 Auto Miners</h3>
+<p id="minerText">0 miners</p>
+<button onclick="buyMiner()">Buy Miner</button>
+</div>
+<div class="item">
+<h3>🎁 Daily Gift</h3>
+<p>Claim 250 free gems once per day.</p>
+<button onclick="dailyGift()">Claim Gift</button>
+</div>
+<div class="item">
+<h3>⚡ Boost</h3>
+<p id="boostText">No active boost</p>
+<button onclick="buyBoost()">Buy 2x Boost: 300 💎</button>
+</div>
+<div class="item">
+<h3>🌟 Global Event</h3>
+<p id="eventText">Waiting for an event.</p>
+<p id="eventTimer" class="muted"></p>
+</div>
+</div>
 
-  <div class="panel">
-    <h2>👑 World Boss</h2>
-    <p id="bossText">A giant crystal is waiting!</p>
-    <div class="bar"><span id="bossBar"></span></div>
-    <button onclick="attackBoss()">⚔️ Attack Boss</button>
-  </div>
+<div class="panel">
+<h2>👑 World Boss</h2>
+<p id="bossText">A giant crystal is waiting!</p>
+<div class="bar"><span id="bossBar"></span></div>
+<button onclick="attackBoss()">⚔️ Attack Boss</button>
+</div>
 
-  <div class="panel">
-    <h2>🕳️ Secret Crystal Cave</h2>
-    <p>Become a real cave miner. Explore the 3D cave and search for hidden crystals and gems!</p>
-    <button onclick="showTab('cave')">⛏️ ENTER THE 3D CAVE</button>
-  </div>
+<div class="panel">
+<h2>🕳️ Secret Crystal Cave</h2>
+<p>Become a real cave miner. Explore the 3D cave and search for hidden crystals and gems!</p>
+<button onclick="showTab('cave')">⛏️ ENTER THE 3D CAVE</button>
+</div>
 </section>
 
 <section id="cave" class="tab hidden">
-  <div class="panel">
-    <h2>🕳️ GRISTAL 3D CRYSTAL CAVE</h2>
-    <p>Explore the cave, find glowing crystals and mine them for rewards.</p>
-    <div id="cave3d"></div>
-    <p id="caveMessage" style="text-align:center;margin:12px">Welcome to the cave, miner!</p>
-    <p class="caveHelp">Computer: WASD or arrow keys to move. Q and E to turn. Get close to a crystal and press Mine.</p>
-    <p class="caveHelp">Mobile: Use the movement buttons below.</p>
-    <div class="caveControls">
-      <span></span>
-      <button onclick="moveCave('forward')">⬆️</button>
-      <span></span>
-      <button onclick="moveCave('left')">⬅️</button>
-      <button onclick="moveCave('back')">⬇️</button>
-      <button onclick="moveCave('right')">➡️</button>
-      <button onclick="turnCave(-1)">↶ Turn</button>
-      <button onclick="mineCaveCrystal()">⛏️ MINE</button>
-      <button onclick="turnCave(1)">Turn ↷</button>
-    </div>
-    <button style="width:100%" onclick="leaveCave()">🚪 LEAVE CAVE</button>
-  </div>
+<div class="panel">
+<h2>🕳️ GRISTAL 3D CRYSTAL CAVE 2.0</h2>
+<p>Explore the cave, jump, mine crystals and discover hidden treasures!</p>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+<button onclick="toggleCaveCamera()">🎥 Switch Camera (V)</button>
+<button onclick="jumpCave()">⬆️ Jump</button>
+<button onclick="mineCaveCrystal()">⛏️ Mine</button>
+</div>
+
+<p id="cameraMode" class="muted">Camera: Third Person</p>
+<div id="cave3d"></div>
+<p id="caveMessage" style="text-align:center;margin:12px">Welcome to the cave, miner!</p>
+
+<p class="caveHelp">
+WASD: Move | Mouse: Look | Space: Jump | V: Switch camera
+<br>Left-click: Swing pickaxe and mine a nearby crystal.
+<br>Click inside the cave to activate mouse look.
+</p>
+
+<p class="caveHelp">Mobile: Use the buttons below to move, turn, jump and mine.</p>
+
+<div class="caveControls">
+<span></span>
+<button onclick="moveCave('forward')">⬆️</button>
+<span></span>
+<button onclick="moveCave('left')">⬅️</button>
+<button onclick="moveCave('back')">⬇️</button>
+<button onclick="moveCave('right')">➡️</button>
+<button onclick="turnCave(-1)">↶ Turn</button>
+<button onclick="jumpCave()">🦘 JUMP</button>
+<button onclick="turnCave(1)">Turn ↷</button>
+<span></span>
+<button onclick="mineCaveCrystal()">⛏️ MINE</button>
+<span></span>
+</div>
+
+<button style="width:100%" onclick="leaveCave()">🚪 LEAVE CAVE</button>
+</div>
 </section>
 
 <section id="shop" class="tab hidden">
-  <div class="panel">
-    <h2>🛠️ Pickaxe Shop</h2>
-    <p>100 pickaxes, from beginner tools to GOD-tier tools.</p>
-    <p id="pickaxeInfo"></p>
-  </div>
-  <div id="pickaxeList" class="grid"></div>
-  <div class="panel">
-    <h2>✨ Pickaxe Enchantments</h2>
-    <p id="enchantText">Enchant level: 0</p>
-    <button onclick="enchantPickaxe()">Enchant Pickaxe</button>
-  </div>
+<div class="panel">
+<h2>🛠️ Pickaxe Shop</h2>
+<p>100 pickaxes, from beginner tools to GOD-tier tools.</p>
+<p id="pickaxeInfo"></p>
+</div>
+<div id="pickaxeList" class="grid"></div>
+<div class="panel">
+<h2>✨ Pickaxe Enchantments</h2>
+<p id="enchantText">Enchant level: 0</p>
+<button onclick="enchantPickaxe()">Enchant Pickaxe</button>
+</div>
 </section>
 
 <section id="pets" class="tab hidden">
-  <div class="panel">
-    <h2>🥚 Eggs and Pets</h2>
-    <p>Every world has 3 eggs. Each egg has 5 possible pets.</p>
-    <select id="eggSelect"></select>
-    <button onclick="hatchEgg()">Hatch Egg</button>
-  </div>
-  <div class="panel">
-    <h2>🐾 Your Pets</h2>
-    <p id="petCount"></p>
-    <p class="muted">Equip up to 3 pets. Combine 3 identical pets to evolve one.</p>
-    <div id="petList" class="grid"></div>
-  </div>
-  <div class="panel">
-    <h2>🧬 Pet Evolution</h2>
-    <select id="evolveSelect"></select>
-    <button onclick="evolvePet()">Evolve Pet</button>
-  </div>
+<div class="panel">
+<h2>🥚 Eggs and Pets</h2>
+<p>Every world has 3 eggs. Each egg has 5 possible pets.</p>
+<select id="eggSelect"></select>
+<button onclick="hatchEgg()">Hatch Egg</button>
+</div>
+<div class="panel">
+<h2>🐾 Your Pets</h2>
+<p id="petCount"></p>
+<p class="muted">Equip up to 3 pets. Combine 3 identical pets to evolve one.</p>
+<div id="petList" class="grid"></div>
+</div>
+<div class="panel">
+<h2>🧬 Pet Evolution</h2>
+<select id="evolveSelect"></select>
+<button onclick="evolvePet()">Evolve Pet</button>
+</div>
 </section>
 
 <section id="worlds" class="tab hidden">
-  <div class="panel">
-    <h2>🌍 Explore 21 Worlds</h2>
-    <p>Each world has 100 crystals. Later worlds have stronger crystals and bigger rewards.</p>
-  </div>
-  <div id="worldList" class="grid"></div>
+<div class="panel">
+<h2>🌍 Explore 21 Worlds</h2>
+<p>Each world has 100 crystals. Later worlds have stronger crystals and bigger rewards.</p>
+</div>
+<div id="worldList" class="grid"></div>
 </section>
 
 <section id="quests" class="tab hidden">
-  <div class="panel"><h2>📜 Daily Quests</h2><div id="dailyQuests"></div></div>
-  <div class="panel"><h2>🗓️ Weekly Quests</h2><div id="weeklyQuests"></div></div>
+<div class="panel"><h2>📜 Daily Quests</h2><div id="dailyQuests"></div></div>
+<div class="panel"><h2>🗓️ Weekly Quests</h2><div id="weeklyQuests"></div></div>
 </section>
 
 <section id="base" class="tab hidden">
-  <div class="panel">
-    <h2>🏠 Your Mining Base</h2>
-    <div class="big">🏰</div>
-    <p id="baseLevel">Base level 1</p>
-    <p>Your base gives you extra mining power and passive rewards.</p>
-    <button onclick="upgradeBase()">Upgrade Base</button>
-  </div>
+<div class="panel">
+<h2>🏠 Your Mining Base</h2>
+<div class="big">🏰</div>
+<p id="baseLevel">Base level 1</p>
+<p>Your base gives you extra mining power and passive rewards.</p>
+<button onclick="upgradeBase()">Upgrade Base</button>
+</div>
 </section>
 
 <section id="market" class="tab hidden">
-  <div class="panel">
-    <h2>🏪 Gristal Merchant</h2>
-    <p>Trade with the in-game merchant for supplies.</p>
-    <div class="grid">
-      <div class="item">
-        <h3>🧪 Mining Potion</h3>
-        <p>Extra power for 60 seconds.</p>
-        <button onclick="buyPotion()">Buy for 200 💎</button>
-      </div>
-      <div class="item">
-        <h3>🥚 Mystery Egg</h3>
-        <p>A surprise pet.</p>
-        <button onclick="buyMysteryEgg()">Buy for 500 💎</button>
-      </div>
-      <div class="item">
-        <h3>💰 Sell Pet</h3>
-        <p>Sell one unequipped pet for gems.</p>
-        <button onclick="sellPet()">Sell one pet</button>
-      </div>
-    </div>
-  </div>
-  <div class="panel hidden" id="secretShop">
-    <h2>🌌 SECRET GOD'S DOMAIN SHOP</h2>
-    <p>Only the strongest miners can enter.</p>
-    <button onclick="buySecretPower()">Buy Divine Power: 1,000,000 💎</button>
-  </div>
+<div class="panel">
+<h2>🏪 Gristal Merchant</h2>
+<p>Trade with the in-game merchant for supplies.</p>
+<div class="grid">
+<div class="item">
+<h3>🧪 Mining Potion</h3>
+<p>Extra power for 60 seconds.</p>
+<button onclick="buyPotion()">Buy for 200 💎</button>
+</div>
+<div class="item">
+<h3>🥚 Mystery Egg</h3>
+<p>A surprise pet.</p>
+<button onclick="buyMysteryEgg()">Buy for 500 💎</button>
+</div>
+<div class="item">
+<h3>💰 Sell Pet</h3>
+<p>Sell one unequipped pet for gems.</p>
+<button onclick="sellPet()">Sell one pet</button>
+</div>
+</div>
+</div>
+<div class="panel hidden" id="secretShop">
+<h2>🌌 SECRET GOD'S DOMAIN SHOP</h2>
+<p>Only the strongest miners can enter.</p>
+<button onclick="buySecretPower()">Buy Divine Power: 1,000,000 💎</button>
+</div>
 </section>
 
 <section id="achievements" class="tab hidden">
-  <div class="panel">
-    <h2>🏆 Achievements and Badges</h2>
-    <div id="achievementList"></div>
-  </div>
+<div class="panel">
+<h2>🏆 Achievements and Badges</h2>
+<div id="achievementList"></div>
+</div>
 </section>
 
 <section id="rebirth" class="tab hidden">
-  <div class="panel">
-    <h2>♻️ Rebirth System</h2>
-    <div class="big">🌟</div>
-    <p>Rebirth resets your gems, worlds and pickaxe progress.</p>
-    <p>You keep your pets, achievements and permanent rebirth bonuses.</p>
-    <p id="rebirthInfo"></p>
-    <button onclick="rebirth()">REBIRTH NOW</button>
-  </div>
+<div class="panel">
+<h2>♻️ Rebirth System</h2>
+<div class="big">🌟</div>
+<p>Rebirth resets your gems, worlds and pickaxe progress.</p>
+<p>You keep your pets, achievements and permanent rebirth bonuses.</p>
+<p id="rebirthInfo"></p>
+<button onclick="rebirth()">REBIRTH NOW</button>
+</div>
 </section>
 
 </main>
@@ -298,6 +318,8 @@ secretPower:0,playSeconds:0
 };
 
 let crystalHealth=100;
+
+// Cave variables
 let caveScene=null;
 let caveCamera=null;
 let caveRenderer=null;
@@ -305,8 +327,23 @@ let caveCrystals=[];
 let caveStarted=false;
 let caveRunning=false;
 let caveYaw=0;
+let cavePitch=0;
 let caveKeys={};
 let caveAnimation=null;
+let cavePlayer=null;
+let caveHead=null;
+let caveLeftArm=null;
+let caveRightArm=null;
+let caveLeftLeg=null;
+let caveRightLeg=null;
+let cavePickaxe=null;
+let caveCameraMode="third";
+let caveVelocityY=0;
+let caveOnGround=true;
+let caveWalkTime=0;
+let caveSwingTime=0;
+let caveMouseReady=false;
+let caveLastTime=0;
 
 function load(){
 try{
@@ -344,7 +381,11 @@ if(id==="quests")renderQuests();
 if(id==="achievements")renderAchievements();
 if(id==="cave")enterCave();
 
-if(id!=="cave")caveRunning=false;
+if(id!=="cave"){
+caveRunning=false;
+if(document.pointerLockElement)document.exitPointerLock();
+}
+
 update();
 }
 
@@ -452,10 +493,9 @@ for(let i=0;i<100;i++){
 let power=Math.floor(Math.pow(1.65,i));
 let price=Math.floor(100*Math.pow(2.1,i));
 let name=PICK_NAMES[i]||(["Ancient","Mythic","Celestial","Eternal","GOD"][i%5]+" Pickaxe "+(i+1));
-let owned=game.pick>=i;
 let div=document.createElement("div");
 div.className="item";
-div.innerHTML=`<h3>⛏️ ${name}</h3><p>Power: ${fmt(power)}</p><p>Price: ${fmt(price)} gems</p><button ${owned?"disabled":""} onclick="buyPickaxe(${i})">${owned?"Owned":"Buy Pickaxe"}</button>`;
+div.innerHTML=`<h3>⛏️ ${name}</h3><p>Power: ${fmt(power)}</p><p>Price: ${fmt(price)} gems</p><button ${game.pick>=i?"disabled":""} onclick="buyPickaxe(${i})">${game.pick>=i?"Owned":"Buy Pickaxe"}</button>`;
 box.appendChild(div);
 }
 
@@ -824,7 +864,7 @@ active?"Event ends in "+Math.ceil((game.eventUntil-Date.now())/1000)+" seconds":
 }
 
 /* =====================================
-   3D CRYSTAL CAVE
+   GRISTAL ROBLOX-STYLE 3D CAVE
 ===================================== */
 
 function enterCave(){
@@ -836,71 +876,69 @@ document.getElementById("caveMessage").textContent=
 return;
 }
 
-if(!caveStarted){
-createCave();
-}else{
-resizeCave();
-}
+if(!caveStarted)createCave();
+else resizeCave();
 
-if(caveAnimation===null){
-animateCave();
-}
+if(caveAnimation===null)animateCave();
 }
 
 function createCave(){
 const container=document.getElementById("cave3d");
 
 caveScene=new THREE.Scene();
-caveScene.background=new THREE.Color(0x090817);
-caveScene.fog=new THREE.Fog(0x090817,8,32);
+caveScene.background=new THREE.Color(0x100b20);
+caveScene.fog=new THREE.Fog(0x100b20,13,38);
 
 caveCamera=new THREE.PerspectiveCamera(
-75,
-container.clientWidth/container.clientHeight,
-0.1,
-100
+75,container.clientWidth/container.clientHeight,.1,100
 );
-
-caveCamera.position.set(0,1.7,7);
-caveYaw=0;
-caveCamera.rotation.order="YXZ";
 
 caveRenderer=new THREE.WebGLRenderer({antialias:true});
 caveRenderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 caveRenderer.setSize(container.clientWidth,container.clientHeight);
+caveRenderer.shadowMap.enabled=true;
+caveRenderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
 container.innerHTML="";
 container.appendChild(caveRenderer.domElement);
 
-const ambient=new THREE.AmbientLight(0x7777aa,1.5);
-caveScene.add(ambient);
+caveScene.add(new THREE.HemisphereLight(0xb9b4ff,0x21132b,1.8));
 
-const purpleLight=new THREE.PointLight(0x8833ff,3,30);
+const purpleLight=new THREE.PointLight(0x9955ff,3,35);
 purpleLight.position.set(0,4,0);
+purpleLight.castShadow=true;
 caveScene.add(purpleLight);
 
-const blueLight=new THREE.PointLight(0x2255ff,2,18);
-blueLight.position.set(-4,2,-6);
+const blueLight=new THREE.PointLight(0x2277ff,2,20);
+blueLight.position.set(-5,3,-7);
 caveScene.add(blueLight);
 
-const floor=new THREE.Mesh(
-new THREE.PlaneGeometry(40,40),
-new THREE.MeshStandardMaterial({color:0x211936,roughness:1})
-);
-floor.rotation.x=-Math.PI/2;
-floor.position.y=0;
-caveScene.add(floor);
+const pinkLight=new THREE.PointLight(0xff44dd,1.5,18);
+pinkLight.position.set(5,2,5);
+caveScene.add(pinkLight);
+
+const floorMaterial=new THREE.MeshStandardMaterial({
+color:0x302641,roughness:.95
+});
 
 const rockMaterial=new THREE.MeshStandardMaterial({
-color:0x171125,
-roughness:1
+color:0x211a30,roughness:1
 });
+
+const floor=new THREE.Mesh(
+new THREE.PlaneGeometry(40,40),floorMaterial
+);
+floor.rotation.x=-Math.PI/2;
+floor.receiveShadow=true;
+caveScene.add(floor);
 
 function addRock(x,y,z,sx,sy,sz){
 const rock=new THREE.Mesh(
-new THREE.BoxGeometry(sx,sy,sz),
-rockMaterial
+new THREE.BoxGeometry(sx,sy,sz),rockMaterial
 );
 rock.position.set(x,y,z);
+rock.castShadow=true;
+rock.receiveShadow=true;
 caveScene.add(rock);
 }
 
@@ -909,92 +947,264 @@ addRock(7,3,0,1,6,20);
 addRock(0,3,-10,14,6,1);
 addRock(0,3,10,14,6,1);
 
-// Ceiling rocks
-for(let i=0;i<22;i++){
-const rock=new THREE.Mesh(
-new THREE.DodecahedronGeometry(.5+Math.random()*.8),
-rockMaterial
-);
-rock.position.set(-6+Math.random()*12,5,-9+Math.random()*18);
-caveScene.add(rock);
-}
-
-// Decorative rocks
+// Rocky ceiling
 for(let i=0;i<35;i++){
 const rock=new THREE.Mesh(
-new THREE.DodecahedronGeometry(.3+Math.random()*.5),
+new THREE.DodecahedronGeometry(.5+Math.random()*.9),
 rockMaterial
 );
-rock.position.set(-6+Math.random()*12,.3,-9+Math.random()*18);
+rock.position.set(
+-6+Math.random()*12,
+5+Math.random()*1.5,
+-9+Math.random()*18
+);
+rock.rotation.set(Math.random(),Math.random(),Math.random());
+rock.castShadow=true;
 caveScene.add(rock);
 }
 
-// Crystal colors
-const crystalColors=[
-0x8b4dff,
-0x22ddff,
-0x44ff99,
-0xff44dd,
-0xffcc33
-];
+// Small rocks on the floor
+for(let i=0;i<45;i++){
+const rock=new THREE.Mesh(
+new THREE.DodecahedronGeometry(.2+Math.random()*.45),
+rockMaterial
+);
+rock.position.set(
+-6+Math.random()*12,.15,-9+Math.random()*18
+);
+rock.castShadow=true;
+caveScene.add(rock);
+}
+
+createCavePlayer();
 
 caveCrystals=[];
+const crystalColors=[0x9b55ff,0x22ddff,0x44ff99,0xff44dd,0xffcc33];
 
 for(let i=0;i<30;i++){
-const color=crystalColors[Math.floor(Math.random()*crystalColors.length)];
-
-const geometry=new THREE.OctahedronGeometry(
-.45+Math.random()*.45,
-0
+createCaveCrystal(
+-5+Math.random()*10,
+-8+Math.random()*14,
+crystalColors[Math.floor(Math.random()*crystalColors.length)]
 );
+}
+
+const entranceLight=new THREE.PointLight(0x9944ff,3,12);
+entranceLight.position.set(0,2,8);
+caveScene.add(entranceLight);
+
+cavePlayer.position.set(0,0,5);
+caveYaw=0;
+cavePitch=0;
+caveCameraMode="third";
+caveStarted=true;
+caveRunning=true;
+
+resizeCave();
+updateCaveCamera();
+updateCameraLabel();
+
+document.getElementById("caveMessage").textContent=
+"Welcome, miner! Explore the cave and collect glowing crystals.";
+
+const canvas=caveRenderer.domElement;
+
+canvas.addEventListener("click",()=>{
+if(caveCameraMode!=="mobile" && document.pointerLockElement!==canvas){
+canvas.requestPointerLock?.();
+}
+});
+
+canvas.addEventListener("mousedown",e=>{
+if(e.button===0){
+swingPickaxe();
+mineCaveCrystal();
+}
+});
+
+document.addEventListener("mousemove",e=>{
+if(caveRunning && document.pointerLockElement===canvas){
+caveYaw-=e.movementX*.0025;
+cavePitch-=e.movementY*.0025;
+cavePitch=Math.max(-1.1,Math.min(1.1,cavePitch));
+}
+});
+}
+
+function createCaveCrystal(x,z,color){
+const group=new THREE.Group();
 
 const material=new THREE.MeshStandardMaterial({
 color:color,
 emissive:color,
-emissiveIntensity:1,
-metalness:.3,
+emissiveIntensity:1.1,
+metalness:.25,
 roughness:.2
 });
 
-const crystal=new THREE.Mesh(geometry,material);
-
-crystal.position.set(
--5+Math.random()*10,
-.8+Math.random()*1.3,
--8+Math.random()*14
+const main=new THREE.Mesh(
+new THREE.OctahedronGeometry(.55,0),material
 );
+main.castShadow=true;
+group.add(main);
 
-crystal.rotation.set(Math.random(),Math.random(),Math.random());
-crystal.userData.mined=false;
-crystal.userData.value=100+Math.floor(Math.random()*500);
-
-caveScene.add(crystal);
-caveCrystals.push(crystal);
+for(let j=0;j<2;j++){
+const small=new THREE.Mesh(
+new THREE.OctahedronGeometry(.25,0),material
+);
+small.position.set((Math.random()-.5)*.7,-.2,(Math.random()-.5)*.7);
+small.rotation.set(Math.random(),Math.random(),Math.random());
+group.add(small);
 }
 
-// A glowing cave entrance marker
-const markerLight=new THREE.PointLight(0x9944ff,3,10);
-markerLight.position.set(0,2,8);
-caveScene.add(markerLight);
+group.position.set(x,.9,z);
+group.userData.mined=false;
+group.userData.value=100+Math.floor(Math.random()*500);
+group.userData.respawnAt=0;
 
-caveStarted=true;
-caveRunning=true;
+caveScene.add(group);
+caveCrystals.push(group);
+}
 
-document.getElementById("caveMessage").textContent=
-"Welcome, miner! Find a glowing crystal and get close to mine it.";
+function createCavePlayer(){
+cavePlayer=new THREE.Group();
 
-resizeCave();
+const skin=new THREE.MeshStandardMaterial({color:0xffc99c,roughness:.8});
+const shirt=new THREE.MeshStandardMaterial({color:0x713bce,roughness:.8});
+const pants=new THREE.MeshStandardMaterial({color:0x252c55,roughness:.8});
+const shoes=new THREE.MeshStandardMaterial({color:0x171322,roughness:.8});
+const hair=new THREE.MeshStandardMaterial({color:0x21152a});
+const eyeMat=new THREE.MeshStandardMaterial({color:0x171322});
+const pickMat=new THREE.MeshStandardMaterial({color:0xb8c2d9,metalness:.7,roughness:.3});
+const handleMat=new THREE.MeshStandardMaterial({color:0x704323});
+
+function block(w,h,d,mat,parent,x,y,z){
+const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+mesh.position.set(x,y,z);
+mesh.castShadow=true;
+mesh.receiveShadow=true;
+parent.add(mesh);
+return mesh;
+}
+
+// Body and head
+block(.85,1,.45,shirt,cavePlayer,0,1.35,0);
+caveHead=block(.65,.65,.65,skin,cavePlayer,0,2.2,0);
+block(.68,.2,.68,hair,cavePlayer,0,2.58,0);
+
+// Face
+block(.09,.09,.04,eyeMat,cavePlayer,-.15,2.25,-.335);
+block(.09,.09,.04,eyeMat,cavePlayer,.15,2.25,-.335);
+
+// Arms
+caveLeftArm=new THREE.Group();
+caveLeftArm.position.set(-.53,1.72,0);
+cavePlayer.add(caveLeftArm);
+block(.25,.75,.27,skin,caveLeftArm,0,-.35,0);
+
+caveRightArm=new THREE.Group();
+caveRightArm.position.set(.53,1.72,0);
+cavePlayer.add(caveRightArm);
+block(.25,.75,.27,skin,caveRightArm,0,-.35,0);
+
+// Legs
+caveLeftLeg=new THREE.Group();
+caveLeftLeg.position.set(-.23,.85,0);
+cavePlayer.add(caveLeftLeg);
+block(.3,.75,.35,pants,caveLeftLeg,0,-.35,0);
+block(.32,.18,.43,shoes,caveLeftLeg,0,-.78,-.04);
+
+caveRightLeg=new THREE.Group();
+caveRightLeg.position.set(.23,.85,0);
+cavePlayer.add(caveRightLeg);
+block(.3,.75,.35,pants,caveRightLeg,0,-.35,0);
+block(.32,.18,.43,shoes,caveRightLeg,0,-.78,-.04);
+
+// Pickaxe in the right hand
+cavePickaxe=new THREE.Group();
+cavePickaxe.position.set(0,-.55,-.05);
+caveRightArm.add(cavePickaxe);
+
+block(.09,.9,.09,handleMat,cavePickaxe,0,.35,0);
+
+const pickHead=new THREE.Mesh(
+new THREE.BoxGeometry(.85,.13,.15),pickMat
+);
+pickHead.position.set(0,.78,0);
+pickHead.castShadow=true;
+cavePickaxe.add(pickHead);
+
+const tip1=new THREE.Mesh(
+new THREE.ConeGeometry(.12,.35,4),pickMat
+);
+tip1.rotation.z=-Math.PI/2;
+tip1.position.set(-.48,.78,0);
+cavePickaxe.add(tip1);
+
+const tip2=tip1.clone();
+tip2.rotation.z=Math.PI/2;
+tip2.position.x=.48;
+cavePickaxe.add(tip2);
+
+caveScene.add(cavePlayer);
+}
+
+function updateCameraLabel(){
+document.getElementById("cameraMode").textContent=
+"Camera: "+(caveCameraMode==="third"?"Third Person":"First Person")+" | Press V to switch";
+}
+
+function toggleCaveCamera(){
+if(!caveStarted)return;
+caveCameraMode=caveCameraMode==="third"?"first":"third";
+updateCaveCamera();
+updateCameraLabel();
+notify(caveCameraMode==="third"?"Third-person camera":"First-person camera");
+}
+
+function updateCaveCamera(){
+if(!caveCamera||!cavePlayer)return;
+
+if(caveCameraMode==="first"){
+caveCamera.position.set(
+cavePlayer.position.x,
+cavePlayer.position.y+2.35,
+cavePlayer.position.z
+);
+}else{
+const distance=5;
+const height=2.5;
+
+caveCamera.position.set(
+cavePlayer.position.x+Math.sin(caveYaw)*distance,
+cavePlayer.position.y+height,
+cavePlayer.position.z+Math.cos(caveYaw)*distance
+);
+
+const target=new THREE.Vector3(
+cavePlayer.position.x,
+cavePlayer.position.y+1.6,
+cavePlayer.position.z
+);
+
+caveCamera.lookAt(target);
+caveCamera.rotation.order="YXZ";
+caveCamera.rotation.y=caveYaw;
+caveCamera.rotation.x=cavePitch;
+return;
+}
+
+caveCamera.rotation.order="YXZ";
+caveCamera.rotation.y=caveYaw;
+caveCamera.rotation.x=cavePitch;
 }
 
 function resizeCave(){
 if(!caveRenderer||!caveCamera)return;
-
 const container=document.getElementById("cave3d");
 const w=container.clientWidth;
 const h=container.clientHeight;
-
 if(!w||!h)return;
-
 caveCamera.aspect=w/h;
 caveCamera.updateProjectionMatrix();
 caveRenderer.setSize(w,h);
@@ -1005,9 +1215,12 @@ caveAnimation=requestAnimationFrame(animateCave);
 
 if(!caveScene||!caveCamera||!caveRenderer)return;
 
-if(caveRunning){
-const speed=.075;
+const now=performance.now();
+const delta=Math.min((now-caveLastTime)/1000,.05)||.016;
+caveLastTime=now;
 
+if(caveRunning){
+const moveSpeed=5*delta;
 let forward=0;
 let sideways=0;
 
@@ -1016,27 +1229,91 @@ if(caveKeys["s"]||caveKeys["arrowdown"])forward-=1;
 if(caveKeys["a"]||caveKeys["arrowleft"])sideways-=1;
 if(caveKeys["d"]||caveKeys["arrowright"])sideways+=1;
 
-if(caveKeys["q"])caveYaw+=.035;
-if(caveKeys["e"])caveYaw-=.035;
+if(caveKeys["q"])caveYaw+=2*delta;
+if(caveKeys["e"])caveYaw-=2*delta;
 
-const dx=Math.sin(caveYaw)*forward*speed;
-const dz=-Math.cos(caveYaw)*forward*speed;
+const length=Math.sqrt(forward*forward+sideways*sideways);
+if(length>0){
+forward/=length;
+sideways/=length;
+caveWalkTime+=delta*9;
+}
 
-const sx=Math.cos(caveYaw)*sideways*speed;
-const sz=Math.sin(caveYaw)*sideways*speed;
+const dx=-Math.sin(caveYaw)*forward*moveSpeed+
+Math.cos(caveYaw)*sideways*moveSpeed;
 
-caveCamera.position.x+=dx+sx;
-caveCamera.position.z+=dz+sz;
+const dz=-Math.cos(caveYaw)*forward*moveSpeed-
+Math.sin(caveYaw)*sideways*moveSpeed;
 
-caveCamera.position.x=Math.max(-5.5,Math.min(5.5,caveCamera.position.x));
-caveCamera.position.z=Math.max(-8.5,Math.min(8.5,caveCamera.position.z));
+cavePlayer.position.x+=dx;
+cavePlayer.position.z+=dz;
 
-caveCamera.rotation.y=caveYaw;
+cavePlayer.position.x=Math.max(-5.7,Math.min(5.7,cavePlayer.position.x));
+cavePlayer.position.z=Math.max(-8.7,Math.min(8.7,cavePlayer.position.z));
 
+// Gravity and jumping
+if(!caveOnGround){
+caveVelocityY-=14*delta;
+cavePlayer.position.y+=caveVelocityY*delta;
+
+if(cavePlayer.position.y<=0){
+cavePlayer.position.y=0;
+caveVelocityY=0;
+caveOnGround=true;
+}
+}
+
+// Turn the miner toward the direction of movement
+if(length>0){
+cavePlayer.rotation.y=Math.atan2(-dx,-dz);
+}
+
+// Walking animation
+const walk=Math.sin(caveWalkTime)*.55;
+caveLeftLeg.rotation.x=walk;
+caveRightLeg.rotation.x=-walk;
+caveLeftArm.rotation.x=-walk*.5;
+if(caveSwingTime<=0)caveRightArm.rotation.x=walk*.5;
+
+// Pickaxe swing
+if(caveSwingTime>0){
+caveSwingTime-=delta;
+caveRightArm.rotation.x=-1.7+Math.sin(caveSwingTime*18)*.25;
+caveRightArm.rotation.z=-.4;
+}else{
+caveRightArm.rotation.z=0;
+}
+
+// First-person character visibility
+if(caveCameraMode==="first"){
+caveHead.visible=false;
+cavePlayer.children[0].visible=false;
+caveLeftArm.visible=true;
+caveRightArm.visible=true;
+caveLeftLeg.visible=false;
+caveRightLeg.visible=false;
+}else{
+caveHead.visible=true;
+cavePlayer.children[0].visible=true;
+caveLeftArm.visible=true;
+caveRightArm.visible=true;
+caveLeftLeg.visible=true;
+caveRightLeg.visible=true;
+}
+
+updateCaveCamera();
+
+// Crystal animations and respawning
 caveCrystals.forEach(crystal=>{
-if(!crystal.userData.mined){
-crystal.rotation.y+=.012;
-crystal.position.y+=Math.sin(Date.now()*.001+crystal.position.x)*.002;
+if(crystal.userData.mined){
+if(Date.now()>=crystal.userData.respawnAt){
+crystal.userData.mined=false;
+crystal.visible=true;
+crystal.position.y=.9;
+}
+}else{
+crystal.rotation.y+=.01;
+crystal.position.y=.9+Math.sin(now*.001+crystal.position.x)*.08;
 }
 });
 }
@@ -1045,41 +1322,56 @@ caveRenderer.render(caveScene,caveCamera);
 }
 
 function moveCave(direction){
-if(!caveStarted)return;
+if(!caveStarted||!cavePlayer)return;
+const speed=1.1;
 
-const speed=1;
-const dx=Math.sin(caveYaw);
+const dx=-Math.sin(caveYaw);
 const dz=-Math.cos(caveYaw);
 
 if(direction==="forward"){
-caveCamera.position.x+=dx*speed;
-caveCamera.position.z+=dz*speed;
+cavePlayer.position.x+=dx*speed;
+cavePlayer.position.z+=dz*speed;
 }
 if(direction==="back"){
-caveCamera.position.x-=dx*speed;
-caveCamera.position.z-=dz*speed;
+cavePlayer.position.x-=dx*speed;
+cavePlayer.position.z-=dz*speed;
 }
 if(direction==="left"){
-caveCamera.position.x-=Math.cos(caveYaw)*speed;
-caveCamera.position.z-=Math.sin(caveYaw)*speed;
+cavePlayer.position.x-=Math.cos(caveYaw)*speed;
+cavePlayer.position.z+=Math.sin(caveYaw)*speed;
 }
 if(direction==="right"){
-caveCamera.position.x+=Math.cos(caveYaw)*speed;
-caveCamera.position.z+=Math.sin(caveYaw)*speed;
+cavePlayer.position.x+=Math.cos(caveYaw)*speed;
+cavePlayer.position.z-=Math.sin(caveYaw)*speed;
 }
 
-caveCamera.position.x=Math.max(-5.5,Math.min(5.5,caveCamera.position.x));
-caveCamera.position.z=Math.max(-8.5,Math.min(8.5,caveCamera.position.z));
+cavePlayer.position.x=Math.max(-5.7,Math.min(5.7,cavePlayer.position.x));
+cavePlayer.position.z=Math.max(-8.7,Math.min(8.7,cavePlayer.position.z));
+
+updateCaveCamera();
 }
 
 function turnCave(direction){
 if(!caveStarted)return;
 caveYaw+=direction*.45;
-caveCamera.rotation.y=caveYaw;
+updateCaveCamera();
+}
+
+function jumpCave(){
+if(!caveStarted||!caveOnGround)return;
+caveVelocityY=6;
+caveOnGround=false;
+}
+
+function swingPickaxe(){
+if(!caveStarted)return;
+caveSwingTime=.35;
 }
 
 function mineCaveCrystal(){
-if(!caveStarted)return;
+if(!caveStarted||!cavePlayer)return;
+
+swingPickaxe();
 
 let closest=null;
 let closestDistance=Infinity;
@@ -1087,8 +1379,7 @@ let closestDistance=Infinity;
 caveCrystals.forEach(crystal=>{
 if(crystal.userData.mined)return;
 
-const distance=caveCamera.position.distanceTo(crystal.position);
-
+const distance=cavePlayer.position.distanceTo(crystal.position);
 if(distance<closestDistance){
 closestDistance=distance;
 closest=crystal;
@@ -1103,6 +1394,7 @@ return;
 
 closest.userData.mined=true;
 closest.visible=false;
+closest.userData.respawnAt=Date.now()+12000;
 
 let reward=closest.userData.value*(game.world+1);
 reward=Math.floor(reward*(1+game.rebirths*.25));
@@ -1110,6 +1402,8 @@ reward=Math.floor(reward*(1+game.rebirths*.25));
 game.gems+=reward;
 game.caveFinds++;
 game.totalMined++;
+game.dailyProgress++;
+game.weeklyProgress++;
 
 document.getElementById("caveMessage").textContent=
 "💎 CRYSTAL MINED! You found "+fmt(reward)+" gems!";
@@ -1121,24 +1415,27 @@ save();
 
 function leaveCave(){
 caveRunning=false;
+if(document.pointerLockElement)document.exitPointerLock();
 showTab("mine");
 notify("You left the crystal cave!");
 }
 
+// Keyboard controls
 window.addEventListener("keydown",e=>{
 const key=e.key.toLowerCase();
+const inCave=!document.getElementById("cave").classList.contains("hidden");
 
+if(inCave){
 if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(key)){
-if(document.getElementById("cave").classList.contains("hidden")===false){
 e.preventDefault();
 }
+
+if(key==="v"&&!e.repeat)toggleCaveCamera();
+if(key===" "&&!e.repeat)jumpCave();
+if(key==="f"&&!e.repeat)mineCaveCrystal();
 }
 
 caveKeys[key]=true;
-
-if(key==="f"&&!document.getElementById("cave").classList.contains("hidden")){
-mineCaveCrystal();
-}
 });
 
 window.addEventListener("keyup",e=>{
